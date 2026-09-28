@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HelpDesk Pro - Ticketing System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loginPage" class="login-page">
+  <div class="login-card">
+    <div class="brand"><div class="logo">HD</div><div><h1>HelpDesk Pro</h1><p>Support & Ticketing System</p></div></div>
+
+    <div id="loginView">
+      <h2>Welcome back</h2>
+      <p class="sub">Sign in to manage your support requests.</p>
+      <form id="loginForm">
+        <div class="field"><label>Email</label><input id="loginEmail" type="email" required placeholder="you@school.edu"></div>
+        <div class="field"><label>Password</label><input id="loginPass" type="password" required placeholder="••••••••"></div>
+        <button class="primary" type="submit">Login</button>
+        <div id="loginError" class="error"></div>
+      </form>
+      <p class="toggle-link">Don't have an account? <a id="showRegister">Register</a></p>
+    </div>
+
+    <div id="registerView" class="hidden">
+      <h2>Create an account</h2>
+      <p class="sub">Register as a student, teacher, or admin.</p>
+      <form id="registerForm">
+        <div class="field"><label>Full Name</label><input id="regName" required placeholder="Juan Dela Cruz"></div>
+        <div class="field"><label>Email</label><input id="regEmail" type="email" required placeholder="you@school.edu"></div>
+        <div class="field"><label>Password</label><input id="regPass" type="password" required placeholder="At least 6 characters"></div>
+        <div class="field"><label>I am a</label><select id="regRole"><option value="student">Student</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+        <button class="primary" type="submit">Create Account</button>
+        <div id="registerError" class="error"></div>
+      </form>
+      <p class="toggle-link">Already have an account? <a id="showLogin">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="side-brand"><div class="logo">HD</div><div><b>HelpDesk Pro</b><small style="display:block;color:#94a3b8">Support System</small></div></div>
+    <nav class="nav">
+      <button class="active" data-view="dashboard">▦ Dashboard</button>
+      <button id="navTickets" data-view="tickets">▤ My Tickets</button>
+      <button id="navCreate" data-view="create">＋ Create Ticket</button>
+      <button data-view="knowledge">? Knowledge Base</button>
+      <button data-view="profile">◎ Profile</button>
+    </nav>
+    <div class="side-bottom"><button id="logout" class="logout">Log out</button></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div><h2 id="pageTitle">Dashboard</h2><p id="pageSub">Overview of your support requests</p></div>
+      <div class="user-pill">● <span id="userName">User</span></div>
+    </div>
+
+    <section id="dashboard" class="view active">
+      <div class="stats">
+        <div class="stat"><small>Total Tickets</small><strong id="totalCount">0</strong></div>
+        <div class="stat"><small>Open</small><strong id="openCount">0</strong></div>
+        <div class="stat"><small>In Progress</small><strong id="progressCount">0</strong></div>
+        <div class="stat"><small>Resolved</small><strong id="resolvedCount">0</strong></div>
+      </div>
+      <div class="grid2">
+        <div class="card"><h3>Recent Tickets</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Subject</th><th>Priority</th><th>Status</th></tr></thead><tbody id="recentTable"></tbody></table></div></div>
+        <div class="card"><h3>Quick Actions</h3><div class="actions"><button class="btn blue" id="quickCreateBtn" data-go="create">＋ New Ticket</button><button class="btn" data-go="tickets">View Tickets</button></div></div>
+      </div>
+    </section>
+
+    <section id="tickets" class="view">
+      <div class="card">
+        <div class="toolbar"><input id="search" placeholder="Search tickets..."><select id="statusFilter"><option value="">All statuses</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select><select id="priorityFilter"><option value="">All priorities</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>ID</th><th>Subject</th><th>Requester</th><th>Category</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody id="ticketTable"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="create" class="view">
+      <div class="card">
+        <h3>Submit a New Support Ticket</h3>
+        <form id="ticketForm">
+          <div class="form-grid">
+            <div class="field"><label>Subject</label><input id="subject" required placeholder="e.g. Computer won't start"></div>
+            <div class="field"><label>Category</label><select id="category" required><option>Hardware</option><option>Software</option><option>Network</option><option>Account</option><option>Other</option></select></div>
+            <div class="field"><label>Priority</label><select id="priority"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+            <div class="field full"><label>Description</label><textarea id="description" required placeholder="Describe the problem..."></textarea></div>
+          </div>
+          <button class="primary" style="width:auto" type="submit">Submit Ticket</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="ticketDetail" class="view">
+      <div class="ticket-detail">
+        <div class="card"><div id="detailContent"></div></div>
+        <div class="card" id="updateCard"><h3>Update Ticket</h3><div class="field"><label>Status</label><select id="detailStatus"><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select></div><button class="primary" id="saveStatus">Save Status</button></div>
+      </div>
+    </section>
+
+    <section id="knowledge" class="view">
+      <div class="knowledge">
+        <div class="card article"><h3>🔌 Computer Won't Turn On</h3><p>Check the power cable, outlet, power switch, and connections. If the issue continues, create a ticket.</p></div>
+        <div class="card article"><h3>🌐 No Internet</h3><p>Check Wi-Fi, restart the router, and verify whether other devices can connect.</p></div>
+        <div class="card article"><h3>🖨️ Printer Problems</h3><p>Check paper, ink, cables, printer status, and whether the correct printer is selected.</p></div>
+        <div class="card article"><h3>🔑 Password Reset</h3><p>Use the account recovery process or submit an Account ticket if you cannot recover access.</p></div>
+        <div class="card article"><h3>💻 Slow Computer</h3><p>Restart the device, close unnecessary applications, and check available storage.</p></div>
+        <div class="card article"><h3>📧 Email Issues</h3><p>Check your internet connection and account credentials before contacting support.</p></div>
+      </div>
+    </section>
+
+    <section id="profile" class="view">
+      <div class="card profile">
+        <h3>Profile</h3>
+        <div class="notice">Changes here update your display name for this session only — not saved to the database.</div>
+        <div class="field"><label>Full Name</label><input id="profileName" placeholder="Your name"></div>
+        <div class="field"><label>Email</label><input id="profileEmail" type="email" placeholder="you@school.edu"></div>
+        <button class="btn blue" id="saveProfile">Save Profile</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
