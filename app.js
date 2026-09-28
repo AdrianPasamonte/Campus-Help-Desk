@@ -23,7 +23,7 @@ function requesterName(t) { return t.student_name || currentUser.full_name; }
 // ---------- Tickets ----------
 async function loadTickets() {
   // Row Level Security decides what comes back:
-  // students get only their own tickets, teachers/admins get all of them.
+  // students get only their own tickets, admins get all of them.
   const { data, error } = await sb
     .from("tickets")
     .select("*, student:profiles!tickets_student_id_fkey(full_name)")
@@ -188,6 +188,8 @@ $("ticketTable").addEventListener("click", e => {
   <div class="info-row"><span>Status</span><b>${badge(currentTicket.status)}</b></div>
   <div style="padding-top:18px;line-height:1.6;font-size:14px"><b>Description</b><p style="margin-top:7px;color:var(--muted)">${escapeHtml(currentTicket.description)}</p></div>`;
   $("detailStatus").value = currentTicket.status;
+  // Students can only delete their own tickets, and only while the ticket is still Open
+  $("deleteCard").classList.toggle("hidden", !(currentUser.role === "student" && currentTicket.status === "Open"));
   showView("ticketDetail");
 });
 
@@ -199,9 +201,26 @@ $("saveStatus").addEventListener("click", async () => {
     .eq("id", currentTicket.id)
     .select();
   if (error) { alert("Could not update status: " + error.message); return; }
-  if (!data || data.length === 0) { alert("Not allowed: only teachers and admins can update tickets."); return; }
+  if (!data || data.length === 0) { alert("Not allowed: only admins can update tickets."); return; }
   await loadTickets();
   alert("Ticket status updated.");
+  showView("tickets");
+});
+
+// ---------- Delete ticket (students, own Open tickets) ----------
+$("deleteTicket").addEventListener("click", async () => {
+  if (!currentTicket) return;
+  if (!confirm("Delete ticket #" + currentTicket.id + "? This cannot be undone.")) return;
+  // .select() returns the deleted rows, so we can tell if the security rules blocked it
+  const { data, error } = await sb.from("tickets")
+    .delete()
+    .eq("id", currentTicket.id)
+    .select();
+  if (error) { alert("Could not delete ticket: " + error.message); return; }
+  if (!data || data.length === 0) { alert("Not allowed: you can only delete your own tickets while they are still Open."); return; }
+  currentTicket = null;
+  await loadTickets();
+  alert("Ticket deleted.");
   showView("tickets");
 });
 
