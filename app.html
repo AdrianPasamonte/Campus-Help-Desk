@@ -26,12 +26,12 @@
 
     <div id="registerView" class="hidden">
       <h2>Create an account</h2>
-      <p class="sub">Register as a student, teacher, or admin.</p>
+      <p class="sub">Register as a student or an admin.</p>
       <form id="registerForm">
         <div class="field"><label>Full Name</label><input id="regName" required placeholder="Juan Dela Cruz"></div>
         <div class="field"><label>Email</label><input id="regEmail" type="email" required placeholder="you@school.edu"></div>
         <div class="field"><label>Password</label><input id="regPass" type="password" required placeholder="At least 6 characters"></div>
-        <div class="field"><label>I am a</label><select id="regRole"><option value="student">Student</option><option value="teacher">Teacher</option><option value="admin">Admin</option></select></div>
+        <div class="field"><label>I am a</label><select id="regRole"><option value="student">Student</option><option value="admin">Admin</option></select></div>
         <button class="primary" type="submit">Create Account</button>
         <div id="registerError" class="error"></div>
       </form>
@@ -98,6 +98,7 @@
       <div class="ticket-detail">
         <div class="card"><div id="detailContent"></div></div>
         <div class="card" id="updateCard"><h3>Update Ticket</h3><div class="field"><label>Status</label><select id="detailStatus"><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select></div><button class="primary" id="saveStatus">Save Status</button></div>
+        <div class="card hidden" id="deleteCard"><h3>Delete Ticket</h3><p style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">Submitted this twice by mistake? You can delete a duplicate while it is still Open.</p><button class="primary danger" id="deleteTicket">Delete Ticket</button></div>
       </div>
     </section>
 
