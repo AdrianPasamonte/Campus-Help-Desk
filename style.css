@@ -867,4 +867,13 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 #ticketDetail #commentList:focus-visible{outline:2px solid #93c5fd;outline-offset:4px;border-radius:8px}
 .student-view #ticketDetail .comment{padding:18px;margin-bottom:14px}
 .student-view #ticketDetail .comment small{font-size:12px}
+.ticket-status-line{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--muted);font-size:14px}
+.ticket-metadata{border-top:1px solid var(--border);padding-top:18px;margin-top:22px;font-size:14px}
+.ticket-metadata summary,.reopen-explanation summary{cursor:pointer;color:var(--muted);font-weight:500}
+.ticket-metadata dl{display:grid;gap:12px;margin-top:18px}.ticket-metadata dl>div{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,2fr);gap:16px;line-height:1.6}
+.ticket-metadata dt{color:var(--muted)}.ticket-metadata dd{margin:0;overflow-wrap:anywhere}
+.reopen-explanation{font-size:13px;margin-bottom:18px}.reopen-explanation .field{margin-top:12px}
+.student-view #resolveCard{background:white;border-color:var(--border)}
+.student-view #historyReadOnlyNotice{display:none}
+@media(max-width:650px){.ticket-metadata dl>div{grid-template-columns:1fr;gap:2px}}
 @media(max-width:650px){.student-view .ticket-info>.card,.student-view .conversation-card{padding:20px}.student-view .ticket-detail{gap:18px}#ticketDetail #commentList{max-height:400px;max-height:min(50dvh,400px)}}

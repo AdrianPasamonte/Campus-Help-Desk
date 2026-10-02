@@ -405,10 +405,11 @@
           <h3>Is your problem solved?</h3>
 
           <p class="resolution-prompt">
-            Staff marked this ticket as resolved. Confirm to close it,
-            or reopen it if the problem is still there.
+            Confirm the solution, or ask support to take another look.
           </p>
 
+          <details id="reopenExplanation" class="reopen-explanation">
+            <summary>Add what still needs fixing (optional)</summary>
           <div class="field">
 
             <textarea
@@ -416,6 +417,7 @@
               placeholder="Not fixed? Tell us what is still wrong (optional)"></textarea>
 
           </div>
+          </details>
 
           <div class="actions">
 
@@ -502,7 +504,7 @@
         </details>
         </div>
 
-        <div class="card conversation-card">
+        <div id="conversationCard" class="card conversation-card">
           <div class="comments">
             <p id="historyReadOnlyNotice" class="notice hidden">This ticket is in history. Its conversation and resolution are available for reference.</p>
 

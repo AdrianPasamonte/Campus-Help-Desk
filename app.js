@@ -1074,6 +1074,8 @@ function openTicketDetails(ticket) {
 
   currentTicket = ticket;
   $("commentList").scrollTop = 0;
+  $("conversationCard").classList.remove("hidden");
+  $("reopenExplanation").open = false;
   ticketScreenshotLinks=[];
   $("ticketAttachments").innerHTML="";
   $("screenshotSection").classList.add("hidden");
@@ -1441,6 +1443,7 @@ async function loadComments(
   const {data,error} = result;
 
   if (sequence !== commentLoadSequence || currentUser?.id !== actorId || currentTicket?.id !== ticketId) return;
+  $("conversationCard").classList.toggle("hidden", !error && currentUser.role === "student" && ["Resolved", "Closed"].includes(currentTicket.status) && !data?.length);
 
   if (error) {
 
@@ -2365,14 +2368,13 @@ $("ticketBackBtn").addEventListener("click", () => {
 });
 
 function renderStudentTicketSummary(t) {
-  const guidance = {Open:"Waiting for the support team to review your request.", "In Progress":"The support team is working on your request.", Resolved:"A solution is ready. Confirm below whether it fixed your problem.", Closed:"This request is closed."};
-  return '<span class="eyebrow">REQUEST #'+t.id+'</span><h3>'+escapeHtml(t.subject)+'</h3><div class="student-ticket-status">'+badge(t.status)+'<p class="field-hint">'+(guidance[t.status] || "")+'</p></div>'
-    + '<div class="info-row"><span>Support team</span><b id="detailDepartmentLabel">'+escapeHtml(departmentLabel(t.department))+'</b></div>'
-    + '<div class="info-row"><span>Concern</span><b>'+escapeHtml(t.concern || t.category || "Other concern")+'</b></div>'
-    + '<div class="info-row"><span>Submitted</span><b>'+escapeHtml(new Date(t.created_at).toLocaleDateString())+'</b></div>'
-    + (t.assignee_name ? '<div class="info-row"><span>Handled by</span><b id="detailAssigneeLabel">'+escapeHtml(t.assignee_name)+'</b></div>' : '')
-    + renderTicketProblem(t)
-    + renderTicketSolution(t);
+  const {body, details} = ticketProblemParts(t);
+  const metadata = [{label:"Concern",value:t.concern || t.category || "Other concern"}, {label:"Submitted",value:new Date(t.created_at).toLocaleDateString()}, ...(t.assignee_name ? [{label:"Handled by",value:t.assignee_name}] : []), ...details];
+  return '<span class="eyebrow">REQUEST #'+t.id+'</span><h3>'+escapeHtml(t.subject)+'</h3>'
+    + '<div class="ticket-status-line">'+badge(t.status)+'<span id="detailDepartmentLabel">'+escapeHtml(departmentLabel(t.department))+'</span></div>'
+    + '<div class="request-description"><h3>Your problem</h3><p>'+escapeHtml(body)+'</p></div>'
+    + renderTicketSolution(t)
+    + '<details class="ticket-metadata"><summary>Ticket details</summary><dl>'+metadata.map(d=>'<div><dt>'+escapeHtml(d.label)+'</dt><dd>'+escapeHtml(d.value)+'</dd></div>').join('')+'</dl></details>';
 }
 
 function ticketProblemParts(t) {
