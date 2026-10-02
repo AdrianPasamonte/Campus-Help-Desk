@@ -217,7 +217,7 @@
       <div class="stats">
 
         <div class="stat">
-          <small>Total Tickets</small>
+          <small>Active requests</small>
           <strong id="totalCount">0</strong>
         </div>
 
@@ -232,8 +232,8 @@
         </div>
 
         <div class="stat">
-          <small>Resolved</small>
-          <strong id="resolvedCount">0</strong>
+          <small>Needs assignment</small>
+          <strong id="unassignedCount">0</strong>
         </div>
 
       </div>
@@ -241,7 +241,7 @@
       <div class="grid2">
 
         <div class="card">
-          <h3>Recent Tickets</h3>
+          <h3>Requests needing attention</h3><p class="report-caption">Oldest requests first. Open a request to respond.</p>
 
           <div class="table-wrap">
             <table>
@@ -249,7 +249,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Subject</th>
-                  <th>Status</th>
+                  <th>Status</th><th>Action</th>
                 </tr>
               </thead>
 
@@ -653,25 +653,12 @@
 
     <!-- REPORTS -->
     <section id="reports" class="view">
-      <p id="reportSummary" class="report-summary"></p>
-      <div class="stats report-stats">
-        <div class="stat"><small>Active requests</small><strong id="repActive">0</strong><p>Open or in progress</p></div>
-        <div class="stat"><small>Needs assignment</small><strong id="repUnassigned">0</strong><p>Active requests without a handler</p></div>
-        <div class="stat"><small>Resolved / closed</small><strong id="repResolved">0</strong><p>Requests with a solution provided</p></div>
-        <div class="stat"><small>Oldest active request</small><strong id="repOldest">—</strong><p>Time since the request was submitted</p></div>
-      </div>
-      <div id="reportsEmpty" class="card report-empty hidden"><h3>No ticket data yet</h3><p>Once requests are submitted, department workload and common concerns will appear here.</p></div>
-      <div id="reportBreakdown" class="report-breakdown hidden">
-        <div class="card">
-          <h3>Department workload</h3>
-          <p class="report-caption">Where requests need attention.</p>
-          <div class="table-wrap"><table class="sm"><thead><tr><th scope="col">Department</th><th scope="col">Active</th><th scope="col">Unassigned</th><th scope="col">Resolved / closed</th></tr></thead><tbody id="repCategory"></tbody></table></div>
-        </div>
-        <div class="card">
-          <h3>Common concerns</h3>
-          <p class="report-caption">The five most reported concerns across all tickets.</p>
-          <div class="table-wrap"><table class="sm"><thead><tr><th scope="col">Concern</th><th scope="col">Requests</th></tr></thead><tbody id="repConcern"></tbody></table></div>
-        </div>
+      <div class="report-toolbar"><p id="reportSummary" class="report-summary"></p><div><label for="reportPeriod">Review period</label><select id="reportPeriod"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="all">All time</option></select></div></div>
+      <div id="reportsEmpty" class="card report-empty hidden"><h3>No requests in this period</h3><p>Try a longer period. Charts will appear once requests are submitted.</p></div>
+      <div id="reportBreakdown" class="report-chart-grid hidden">
+        <div class="card report-volume"><h3>Request volume</h3><p id="volumeCaption" class="report-caption">Requests submitted over time.</p><div id="reportVolumeChart"></div></div>
+        <div class="card"><h3>Requests by department</h3><p class="report-caption">Which support teams receive the most requests.</p><div id="reportDepartmentChart"></div></div>
+        <div class="card"><h3>Common concerns</h3><p class="report-caption">The five most reported concerns.</p><div id="reportConcernChart"></div></div>
       </div>
     </section>
 

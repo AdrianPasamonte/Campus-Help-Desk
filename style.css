@@ -809,18 +809,17 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 .help-intro .primary{width:auto;min-width:160px;flex-shrink:0}
 .ticket-back{margin-bottom:18px}
 .report-summary{margin-bottom:16px;color:var(--muted);font-size:13px}
-.report-stats .stat p{margin-top:8px;font-size:12px;line-height:1.5;color:var(--muted)}
-.report-breakdown{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+.report-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
+.report-toolbar .report-summary{margin:0}.report-toolbar>div{display:flex;align-items:center;gap:10px}
+.report-toolbar label{font-size:13px;color:var(--muted);white-space:nowrap}.report-toolbar select{width:auto;min-width:150px}
+.report-chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.report-volume{grid-column:1/-1}.report-line-chart{display:block;width:100%;max-height:300px}.report-line-chart text{font-size:12px;fill:var(--muted)}
+.report-bars{display:flex;flex-direction:column;gap:18px}.report-bar-item>div:first-child{display:flex;justify-content:space-between;gap:16px;font-size:13px;margin-bottom:8px}.report-bar-item span{overflow-wrap:anywhere}
+.report-bar-track{height:10px;border-radius:8px;background:#f1f5f9;overflow:hidden}.report-bar-track span{display:block;height:100%;border-radius:8px}
+@media(max-width:750px){.report-chart-grid{grid-template-columns:1fr}.report-toolbar{align-items:flex-start;flex-direction:column}}
 .report-caption{font-size:13px;color:var(--muted);line-height:1.5;margin:-4px 0 16px}
-.report-breakdown tbody th{font-size:13px;font-weight:500;text-transform:none;letter-spacing:normal;text-align:left;white-space:normal}
-.report-breakdown th,.report-breakdown td{padding:14px 12px}
-.report-breakdown table{min-width:0}
-.report-breakdown tbody th{color:var(--text);overflow-wrap:anywhere}
-.report-breakdown td{text-align:right;white-space:nowrap}
-.report-breakdown thead th:not(:first-child){text-align:right}
 .report-empty{padding:32px}.report-empty p{font-size:14px;color:var(--muted);line-height:1.6;max-width:520px}
-@media(max-width:1100px){.report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.report-breakdown{grid-template-columns:1fr}}
-@media(max-width:550px){.report-stats{grid-template-columns:1fr}.report-empty{padding:24px}}
+@media(max-width:550px){.report-empty{padding:24px}}
 .ticket-info{display:flex;flex-direction:column;gap:16px;min-width:0}
 .ticket-detail .conversation-card{grid-column:2;grid-row:auto}
 .request-description{margin-top:22px;border-top:1px solid var(--border);padding-top:20px}

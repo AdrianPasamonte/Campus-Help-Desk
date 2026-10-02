@@ -127,61 +127,22 @@ async function loadTickets(silent = false) {
 // ---------- Dashboard / Tickets ----------
 
 function render() {
-
-  $("totalCount").textContent =
-    tickets.length;
-
-  $("openCount").textContent =
-    tickets.filter(
-      t => t.status === "Open"
-    ).length;
-
-  $("progressCount").textContent =
-    tickets.filter(
-      t => t.status === "In Progress"
-    ).length;
-
-  $("resolvedCount").textContent =
-    tickets.filter(
-      t =>
-        t.status === "Resolved" ||
-        t.status === "Closed"
-    ).length;
-
-
-  // Recent Tickets
-  // Only active tickets appear here.
-  const recentTickets = tickets.filter(
-    t =>
-      t.status === "Open" ||
-      t.status === "In Progress"
-  );
-
-
-  $("recentTable").innerHTML =
-    recentTickets.slice(0, 5).map(t => `
-      <tr>
-
-        <td>#${t.id}</td>
-
-        <td>
-          ${escapeHtml(t.subject)}
-        </td>
-
-
-
-        <td>
-          ${badge(t.status)}
-        </td>
-
-      </tr>
-    `).join("");
-
-
+  const active = tickets.filter(t => ["Open", "In Progress"].includes(t.status));
+  $("totalCount").textContent = active.length;
+  $("openCount").textContent = active.filter(t => t.status === "Open").length;
+  $("progressCount").textContent = active.filter(t => t.status === "In Progress").length;
+  $("unassignedCount").textContent = active.filter(t => !t.assigned_to).length;
+  const queue = [...active].sort((a,b) => new Date(a.created_at)-new Date(b.created_at) || a.id-b.id);
+  $("recentTable").innerHTML = queue.slice(0,5).map(t => '<tr><td>#'+t.id+'</td><td>'+escapeHtml(t.subject)+'</td><td>'+badge(t.status)+'</td><td><button class="btn" data-ticket="'+t.id+'">Open request</button></td></tr>').join("") || '<tr><td colspan="4" class="empty">No active requests. Your queue is clear.</td></tr>';
   renderTickets();
   renderTicketHistory();
+  if (currentUser?.role === "admin" && $("reports").classList.contains("active")) renderReports();
 }
 
+$("recentTable").addEventListener("click", e => {
+  const ticket = tickets.find(t => String(t.id) === e.target.dataset.ticket);
+  if (ticket) openTicketDetails(ticket);
+});
 
 function renderTickets() {
 
@@ -526,7 +487,7 @@ function showView(name) {
 
     dashboard: [
       currentUser.role === "student" ? "Help Center" : "Dashboard",
-      currentUser.role === "student" ? "Answers and support for campus life" : "Overview of your support requests"
+      currentUser.role === "student" ? "Answers and support for campus life" : "Your current queue and requests needing attention"
     ],
 
     tickets: [
@@ -553,7 +514,7 @@ function showView(name) {
 
     reports: [
       "Reports",
-      "How the help desk is performing"
+      "Review request trends and recurring concerns"
     ],
 
     knowledge: [
@@ -594,9 +555,7 @@ function showView(name) {
 
   if (name === "reports") {
 
-    loadTickets().then(
-      renderReports
-    );
+    loadTickets();
 
   }
 
@@ -1662,89 +1621,48 @@ $("deleteTicket").addEventListener(
 
 // ---------- ADMIN REPORTS ----------
 
-function fmtDuration(ms) {
-
-  if (
-    ms == null ||
-    isNaN(ms)
-  ) {
-    return "—";
-  }
-
-
-  const m =
-    Math.round(
-      ms / 60000
-    );
-
-
-  if (m < 1) {
-    return "< 1m";
-  }
-
-
-  const d =
-    Math.floor(
-      m / 1440
-    );
-
-
-  const h =
-    Math.floor(
-      (m % 1440) / 60
-    );
-
-
-  const mm =
-    m % 60;
-
-
-  if (d) {
-    return `${d}d ${h}h`;
-  }
-
-
-  if (h) {
-    return `${h}h ${mm}m`;
-  }
-
-
-  return `${mm}m`;
-
+function reportBarChart(groups, color) {
+  const maximum = Math.max(1, ...groups.map(g => g[1]));
+  return '<div class="report-bars" role="list">'+groups.map(([label,count]) => '<div class="report-bar-item" role="listitem"><div><span>'+escapeHtml(label)+'</span><strong>'+count+'</strong></div><div class="report-bar-track" aria-hidden="true"><span style="width:'+(count/maximum*100)+'%;background:'+color+'"></span></div></div>').join("")+'</div>';
 }
 
+function requestVolumeChart(list, start, end, monthly) {
+  const buckets=[];
+  const cursor=new Date(start);cursor.setHours(0,0,0,0);if(monthly)cursor.setDate(1);
+  while(cursor<=end){buckets.push({date:new Date(cursor),count:0});monthly?cursor.setMonth(cursor.getMonth()+1):cursor.setDate(cursor.getDate()+1);}
+  const key=d => monthly ? d.getFullYear()+"-"+d.getMonth() : d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+  const counts=new Map();for(const t of list){const k=key(new Date(t.created_at));counts.set(k,(counts.get(k)||0)+1);}
+  for(const b of buckets)b.count=counts.get(key(b.date))||0;
+  const max=Math.max(1,...buckets.map(b=>b.count)),width=640,height=230,left=40,right=620,top=20,bottom=185;
+  const x=i=>left+(right-left)*i/Math.max(1,buckets.length-1), y=n=>bottom-(bottom-top)*n/max;
+  const points=buckets.map((b,i)=>x(i)+','+y(b.count)).join(' ');
+  const ticks=[...new Set([0,Math.ceil(max/2),max])];
+  const grid=ticks.map(n=>'<line x1="'+left+'" y1="'+y(n)+'" x2="'+right+'" y2="'+y(n)+'" stroke="#e5e7eb"/><text x="28" y="'+(y(n)+4)+'" text-anchor="end">'+n+'</text>').join('');
+  const labelIndices=[...new Set([0,Math.floor((buckets.length-1)/2),buckets.length-1])];
+  const labels=labelIndices.map(i=>'<text x="'+x(i)+'" y="212" text-anchor="'+(i===0?'start':i===buckets.length-1?'end':'middle')+'">'+escapeHtml(buckets[i].date.toLocaleDateString(undefined,monthly?{month:"short",year:"numeric"}:{month:"short",day:"numeric"}))+'</text>').join('');
+  const total=list.length,description=total+' requests submitted. Peak '+(monthly?'monthly':'daily')+' volume: '+max+'.';
+  return '<svg class="report-line-chart" viewBox="0 0 '+width+' '+height+'" role="img" aria-label="'+escapeHtml(description)+'"><title>Request volume</title><desc>'+escapeHtml(description)+'</desc>'+grid+'<polyline points="'+points+'" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/>'+buckets.map((b,i)=>'<circle cx="'+x(i)+'" cy="'+y(b.count)+'" r="3" fill="#2563eb"><title>'+escapeHtml(b.date.toLocaleDateString())+': '+b.count+' requests</title></circle>').join('')+labels+'</svg>';
+}
 
 function renderReports() {
-  const active = t => ["Open", "In Progress"].includes(t.status);
-  const done = t => ["Resolved", "Closed"].includes(t.status);
-  const activeTickets = tickets.filter(active);
-  const waits = activeTickets.map(t => Math.max(0, Date.now() - new Date(t.created_at))).filter(Number.isFinite);
-  $("repActive").textContent = activeTickets.length;
-  $("repUnassigned").textContent = activeTickets.filter(t => !t.assigned_to).length;
-  $("repResolved").textContent = tickets.filter(done).length;
-  $("repOldest").textContent = fmtDuration(waits.length ? Math.max(...waits) : null);
-  $("reportSummary").textContent = tickets.length + (tickets.length === 1 ? " request recorded" : " requests recorded") + " · All time";
-  $("reportsEmpty").classList.toggle("hidden", tickets.length > 0);
-  $("reportBreakdown").classList.toggle("hidden", tickets.length === 0);
-
-  const departmentGroups = new Map(Object.keys(departments).map(id => [id, []]));
-  for (const t of tickets) {
-    if (!departmentGroups.has(t.department)) departmentGroups.set(t.department, []);
-    departmentGroups.get(t.department).push(t);
-  }
-  $("repCategory").innerHTML = [...departmentGroups].sort((a,b) => b[1].filter(active).length - a[1].filter(active).length).map(([id,list]) =>
-    '<tr><th scope="row">'+escapeHtml(departmentLabel(id))+'</th><td>'+list.filter(active).length+'</td><td>'+list.filter(t => active(t) && !t.assigned_to).length+'</td><td>'+list.filter(done).length+'</td></tr>'
-  ).join("");
-
-  const concerns = new Map();
-  for (const t of tickets) {
-    const concern = t.concern || "Concern not recorded";
-    concerns.set(concern, (concerns.get(concern) || 0) + 1);
-  }
-  $("repConcern").innerHTML = [...concerns].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0])).slice(0,5).map(([label,count]) =>
-    '<tr><th scope="row">'+escapeHtml(label)+'</th><td>'+count+'</td></tr>'
-  ).join("");
+  const period=$("reportPeriod").value || "30",end=new Date(),start=new Date(end);
+  start.setHours(0,0,0,0);
+  if(period!=="all") start.setDate(start.getDate()-(Number(period)-1));
+  const valid=tickets.filter(t=>Number.isFinite(new Date(t.created_at).getTime()) && new Date(t.created_at)<=end);
+  if(period==="all" && valid.length){start.setTime(Math.min(...valid.map(t=>new Date(t.created_at).getTime())));start.setHours(0,0,0,0);}
+  const list=valid.filter(t=>new Date(t.created_at)>=start);
+  $("reportSummary").textContent=list.length+(list.length===1?" request submitted":" requests submitted")+" · "+(period==="all"?"All time":"Last "+period+" days");
+  $("reportsEmpty").classList.toggle("hidden",list.length>0);
+  $("reportBreakdown").classList.toggle("hidden",list.length===0);
+  if(!list.length){$("reportVolumeChart").innerHTML="";$("reportDepartmentChart").innerHTML="";$("reportConcernChart").innerHTML="";return;}
+  const monthly=period==="all" && (end-start)>90*86400000;
+  $("volumeCaption").textContent="Requests submitted "+(monthly?"each month.":"each day.");
+  $("reportVolumeChart").innerHTML=requestVolumeChart(list,start,end,monthly);
+  const group=key=>{const counts=new Map();for(const t of list){const label=key(t);counts.set(label,(counts.get(label)||0)+1);}return [...counts].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0]));};
+  $("reportDepartmentChart").innerHTML=reportBarChart(group(t=>departmentLabel(t.department)),"#2563eb");
+  $("reportConcernChart").innerHTML=reportBarChart(group(t=>t.concern || "Concern not recorded").slice(0,5),"#14b8a6");
 }
+$("reportPeriod").addEventListener("change",renderReports);
 
 // ---------- ADMIN USERS ----------
 
