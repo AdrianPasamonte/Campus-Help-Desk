@@ -653,85 +653,27 @@
 
     <!-- REPORTS -->
     <section id="reports" class="view">
-
-      <p class="notice">All requests currently loaded. Waiting time means elapsed time since creation for active tickets; it is not a promised response time.</p><div class="stats"><div class="stat"><small>Average active waiting time</small><strong id="repWaiting">—</strong></div><div class="stat"><small>Oldest active request</small><strong id="repOldest">—</strong></div>
-
-        <div class="stat">
-          <small>Resolved / Closed</small>
-          <strong id="repResolved">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Avg Resolution Time</small>
-          <strong id="repAvg">—</strong>
-        </div>
-
-        <div class="stat">
-          <small>Reopened Tickets</small>
-          <strong id="repReopened">0</strong>
-        </div>
-
-        <div class="stat">
-          <small>Unassigned</small>
-          <strong id="repUnassigned">0</strong>
-        </div>
-
+      <p id="reportSummary" class="report-summary"></p>
+      <div class="stats report-stats">
+        <div class="stat"><small>Active requests</small><strong id="repActive">0</strong><p>Open or in progress</p></div>
+        <div class="stat"><small>Needs assignment</small><strong id="repUnassigned">0</strong><p>Active requests without a handler</p></div>
+        <div class="stat"><small>Resolved / closed</small><strong id="repResolved">0</strong><p>Requests with a solution provided</p></div>
+        <div class="stat"><small>Oldest active request</small><strong id="repOldest">—</strong><p>Time since the request was submitted</p></div>
       </div>
-
-      <div class="form-grid">
-
+      <div id="reportsEmpty" class="card report-empty hidden"><h3>No ticket data yet</h3><p>Once requests are submitted, department workload and common concerns will appear here.</p></div>
+      <div id="reportBreakdown" class="report-breakdown hidden">
         <div class="card">
-
-          <h3>By Department</h3>
-
-          <div class="table-wrap">
-
-            <table class="sm">
-
-              <thead>
-                <tr>
-                  <th>Department</th>
-                  <th>Tickets</th><th>Active</th><th>Avg Waiting</th>
-                  <th>Avg Resolution</th>
-                </tr>
-              </thead>
-
-              <tbody id="repCategory"></tbody>
-
-            </table>
-
-          </div>
-
+          <h3>Department workload</h3>
+          <p class="report-caption">Where requests need attention.</p>
+          <div class="table-wrap"><table class="sm"><thead><tr><th scope="col">Department</th><th scope="col">Active</th><th scope="col">Unassigned</th><th scope="col">Resolved / closed</th></tr></thead><tbody id="repCategory"></tbody></table></div>
         </div>
-
         <div class="card">
-
-          <h3>By Staff</h3>
-
-          <div class="table-wrap">
-
-            <table class="sm">
-
-              <thead>
-                <tr>
-                  <th>Staff</th>
-                  <th>Assigned</th>
-                  <th>Resolved</th>
-                  <th>Avg Resolution</th>
-                </tr>
-              </thead>
-
-              <tbody id="repStaff"></tbody>
-
-            </table>
-
-          </div>
-
+          <h3>Common concerns</h3>
+          <p class="report-caption">The five most reported concerns across all tickets.</p>
+          <div class="table-wrap"><table class="sm"><thead><tr><th scope="col">Concern</th><th scope="col">Requests</th></tr></thead><tbody id="repConcern"></tbody></table></div>
         </div>
-
       </div>
-
-<div class="card"><h3>By Support Area</h3><div class="table-wrap"><table class="sm"><thead><tr><th>Area</th><th>Tickets</th><th>Active</th><th>Avg Resolution</th></tr></thead><tbody id="repArea"></tbody></table></div></div><div class="card"><h3>Common Concerns</h3><div class="table-wrap"><table class="sm"><thead><tr><th>Concern</th><th>Tickets</th><th>Active</th></tr></thead><tbody id="repConcern"></tbody></table></div></div>    </section>
+    </section>
 
     <!-- KNOWLEDGE BASE / ARTICLE MANAGEMENT -->
     <section id="knowledge" class="view">

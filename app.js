@@ -1714,43 +1714,36 @@ function fmtDuration(ms) {
 }
 
 
-function avgResolution(list) {
-
-  const times =
-    list
-      .filter(
-        t => t.resolved_at
-      )
-      .map(
-        t =>
-          new Date(t.resolved_at) -
-          new Date(t.created_at)
-      );
-
-
-  return times.length
-    ? times.reduce(
-      (a, b) => a + b,
-      0
-    ) / times.length
-    : null;
-
-}
-
-
 function renderReports() {
- renderScopeReports();
- const done=t=>["Resolved","Closed"].includes(t.status),active=t=>["Open","In Progress"].includes(t.status);
- $("repResolved").textContent=tickets.filter(done).length;
- $("repAvg").textContent=fmtDuration(avgResolution(tickets.filter(done)));
- $("repReopened").textContent=tickets.filter(t=>t.reopen_count>0).length;
- $("repUnassigned").textContent=tickets.filter(t=>active(t)&&!t.assigned_to).length;
- const groups=key=>{const result=new Map();for(const t of tickets){const k=key(t);result.set(k,[...(result.get(k)||[]),t]);}return [...result].sort((a,b)=>b[1].length-a[1].length);};
- $("repCategory").innerHTML=groups(t=>departmentLabel(t.department)).map(([label,list])=>{
-  const waiting=list.filter(active).map(t=>Math.max(0,Date.now()-new Date(t.created_at))).filter(Number.isFinite);
-  return '<tr><td>'+escapeHtml(label)+'</td><td>'+list.length+'</td><td>'+list.filter(active).length+'</td><td>'+fmtDuration(waiting.length?waiting.reduce((a,b)=>a+b,0)/waiting.length:null)+'</td><td>'+fmtDuration(avgResolution(list.filter(done)))+'</td></tr>';
- }).join('') || '<tr><td colspan="5" class="empty">No tickets yet.</td></tr>';
- $("repStaff").innerHTML=groups(t=>t.assignee_name || "Unassigned").map(([label,list])=>'<tr><td>'+escapeHtml(label)+'</td><td>'+list.length+'</td><td>'+list.filter(done).length+'</td><td>'+fmtDuration(avgResolution(list.filter(done)))+'</td></tr>').join('') || '<tr><td colspan="4" class="empty">No tickets yet.</td></tr>';
+  const active = t => ["Open", "In Progress"].includes(t.status);
+  const done = t => ["Resolved", "Closed"].includes(t.status);
+  const activeTickets = tickets.filter(active);
+  const waits = activeTickets.map(t => Math.max(0, Date.now() - new Date(t.created_at))).filter(Number.isFinite);
+  $("repActive").textContent = activeTickets.length;
+  $("repUnassigned").textContent = activeTickets.filter(t => !t.assigned_to).length;
+  $("repResolved").textContent = tickets.filter(done).length;
+  $("repOldest").textContent = fmtDuration(waits.length ? Math.max(...waits) : null);
+  $("reportSummary").textContent = tickets.length + (tickets.length === 1 ? " request recorded" : " requests recorded") + " · All time";
+  $("reportsEmpty").classList.toggle("hidden", tickets.length > 0);
+  $("reportBreakdown").classList.toggle("hidden", tickets.length === 0);
+
+  const departmentGroups = new Map(Object.keys(departments).map(id => [id, []]));
+  for (const t of tickets) {
+    if (!departmentGroups.has(t.department)) departmentGroups.set(t.department, []);
+    departmentGroups.get(t.department).push(t);
+  }
+  $("repCategory").innerHTML = [...departmentGroups].sort((a,b) => b[1].filter(active).length - a[1].filter(active).length).map(([id,list]) =>
+    '<tr><th scope="row">'+escapeHtml(departmentLabel(id))+'</th><td>'+list.filter(active).length+'</td><td>'+list.filter(t => active(t) && !t.assigned_to).length+'</td><td>'+list.filter(done).length+'</td></tr>'
+  ).join("");
+
+  const concerns = new Map();
+  for (const t of tickets) {
+    const concern = t.concern || "Concern not recorded";
+    concerns.set(concern, (concerns.get(concern) || 0) + 1);
+  }
+  $("repConcern").innerHTML = [...concerns].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0])).slice(0,5).map(([label,count]) =>
+    '<tr><th scope="row">'+escapeHtml(label)+'</th><td>'+count+'</td></tr>'
+  ).join("");
 }
 
 // ---------- ADMIN USERS ----------
@@ -2380,16 +2373,6 @@ async function loadTicketExtras(ticketId){
   $("screenshotSection").classList.toggle("hidden",!attachments.error && !links.some(a=>!a.comment_id));
   renderReplyScreenshots();
  }catch(error){if(currentUser?.id===actorId && currentTicket?.id===ticketId && seq===extrasLoadSequence){$("ticketAttachments").innerHTML='<p class="field-hint">Could not load screenshots. Reopen this ticket to retry.</p>';$("screenshotSection").classList.remove("hidden");}}
-}
-function renderScopeReports(){
- const active=tickets.filter(t=>["Open","In Progress"].includes(t.status));
- const waits=active.map(t=>Math.max(0,Date.now()-new Date(t.created_at))).filter(Number.isFinite);
- $("repWaiting").textContent=fmtDuration(waits.length?waits.reduce((a,b)=>a+b,0)/waits.length:null);
- $("repOldest").textContent=fmtDuration(waits.length?Math.max(...waits):null);
- const grouped=key=>{const groups=new Map();for(const t of tickets){const k=key(t);groups.set(k,[...(groups.get(k)||[]),t]);}return [...groups].sort((a,b)=>b[1].length-a[1].length);};
- const rows=(groups,withResolution)=>groups.map(([label,list])=>'<tr><td>'+escapeHtml(label)+'</td><td>'+list.length+'</td><td>'+list.filter(t=>["Open","In Progress"].includes(t.status)).length+'</td>'+(withResolution?'<td>'+fmtDuration(avgResolution(list))+'</td>':'')+'</tr>').join('') || '<tr><td colspan="'+(withResolution?4:3)+'" class="empty">No tickets yet.</td></tr>';
- $("repArea").innerHTML=rows(grouped(t=>faqTopics[t.support_area] || (t.support_area==="other"?"Other / Not sure":"Older request — area not recorded")),true);
- $("repConcern").innerHTML=rows(grouped(t=>t.concern || "Older request — concern not recorded"),false);
 }
 // In-app notifications refresh while the page is visible.
 let notifications=[];

@@ -808,6 +808,19 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 .help-intro{display:flex;align-items:center;justify-content:space-between;gap:24px}
 .help-intro .primary{width:auto;min-width:160px;flex-shrink:0}
 .ticket-back{margin-bottom:18px}
+.report-summary{margin-bottom:16px;color:var(--muted);font-size:13px}
+.report-stats .stat p{margin-top:8px;font-size:12px;line-height:1.5;color:var(--muted)}
+.report-breakdown{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+.report-caption{font-size:13px;color:var(--muted);line-height:1.5;margin:-4px 0 16px}
+.report-breakdown tbody th{font-size:13px;font-weight:500;text-transform:none;letter-spacing:normal;text-align:left;white-space:normal}
+.report-breakdown th,.report-breakdown td{padding:14px 12px}
+.report-breakdown table{min-width:0}
+.report-breakdown tbody th{color:var(--text);overflow-wrap:anywhere}
+.report-breakdown td{text-align:right;white-space:nowrap}
+.report-breakdown thead th:not(:first-child){text-align:right}
+.report-empty{padding:32px}.report-empty p{font-size:14px;color:var(--muted);line-height:1.6;max-width:520px}
+@media(max-width:1100px){.report-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.report-breakdown{grid-template-columns:1fr}}
+@media(max-width:550px){.report-stats{grid-template-columns:1fr}.report-empty{padding:24px}}
 .ticket-info{display:flex;flex-direction:column;gap:16px;min-width:0}
 .ticket-detail .conversation-card{grid-column:2;grid-row:auto}
 .request-description{margin-top:22px;border-top:1px solid var(--border);padding-top:20px}
