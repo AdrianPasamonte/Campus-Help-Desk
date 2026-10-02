@@ -205,13 +205,12 @@
     <!-- DASHBOARD -->
     <section id="dashboard" class="view active">
 <div id="helpHome" class="hidden">
-<div class="help-intro"><span class="eyebrow">CAMPUS SUPPORT</span><h1>How can we help you?</h1><p>Find an answer first, or reach out to the campus help desk.</p></div>
+<div class="help-intro"><div><span class="eyebrow">CAMPUS SUPPORT</span><h1>How can we help you?</h1><p>Browse answers or ask the support team for help.</p></div><button class="primary" type="button" data-go="create">Create a ticket</button></div>
 <div class="field help-search"><label for="faqSearch">Search the knowledge base</label><input id="faqSearch" type="search" placeholder="Search passwords, eLMS, lab computers, payments..."></div>
 <div id="faqTopics" class="faq-topics" role="group" aria-label="Filter help articles by topic"></div>
 <div class="faq-results-heading"><h2>Help articles</h2><span id="faqResultCount" role="status" aria-live="polite"></span></div>
 <div id="homeFaqs" class="knowledge"></div>
 <div class="support-callout"><div><h2>Still need a hand?</h2><p>Tell us what happened. We’ll help you find the right support team.</p></div><button class="primary" data-go="create">＋ Create a ticket</button></div>
-<details class="help-about"><summary>About this help desk</summary><p><strong>Support for STI Ortigas-Cainta</strong></p><p>This is a class project prototype, not an official school service.</p></details>
 </div>
 <div id="staffDashboard">
 
@@ -297,11 +296,9 @@
             placeholder="Search tickets...">
 
           <select id="statusFilter">
-            <option value="">All statuses</option>
+            <option value="">All active statuses</option>
             <option>Open</option>
             <option>In Progress</option>
-            <option>Resolved</option>
-            <option>Closed</option>
           </select>
 
           <select id="departmentFilter" class="hidden" aria-label="Filter by department"><option value="">All departments</option><option value="it">IT</option><option value="registrar">Registrar</option><option value="finance">Finance / Cashier</option><option value="review">Admin review</option></select>
@@ -394,42 +391,47 @@
     <!-- TICKET DETAILS -->
     <section id="ticketDetail" class="view">
 
+      <button id="ticketBackBtn" class="btn ticket-back" type="button">Back to tickets</button>
       <div class="ticket-detail">
 
+        <div class="ticket-info">
         <div class="card">
 
-          <div id="detailContent"></div><h3 class="section-heading">Screenshots</h3><div id="ticketAttachments"></div><p id="attachmentUploadNotice" class="field-hint" role="status"></p><div id="attachmentRetryActions" class="actions hidden"><button id="retryAttachments" class="btn" type="button">Retry screenshots</button><button id="dismissAttachmentRetry" class="btn" type="button">Dismiss</button></div>
+          <div id="detailContent"></div><details id="screenshotSection" class="request-screenshots hidden"><summary>Screenshots</summary><div id="ticketAttachments"></div></details><p id="attachmentUploadNotice" class="field-hint" role="status"></p><div id="attachmentRetryActions" class="actions hidden"><button id="retryAttachments" class="btn" type="button">Retry screenshots</button><button id="dismissAttachmentRetry" class="btn" type="button">Dismiss</button></div>
         </div>
-        <div class="card"><h3>Activity timeline</h3><div id="ticketActivity" class="activity-list"></div></div>
-        <div class="card conversation-card">
-          <div class="comments">
-            <p id="historyReadOnlyNotice" class="notice hidden">This ticket is in history. Its conversation and resolution are available for reference.</p>
+        <!-- STUDENT RESOLUTION -->
+        <div class="card hidden" id="resolveCard">
 
-            <h3>Conversation</h3>
+          <h3>Is your problem solved?</h3>
 
-            <div id="commentList"></div>
+          <p
+            style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">
+            Staff marked this ticket as resolved. Confirm to close it,
+            or reopen it if the problem is still there.
+          </p>
 
-            <form id="commentForm">
-              <p id="replyError" class="error" role="alert"></p><div class="field"><label for="replyFiles">Screenshots (optional)</label><input id="replyFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="replyFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP.</p></div>
+          <div class="field">
 
-              <div class="field">
+            <textarea
+              aria-label="What still needs fixing (optional)" id="reopenReason"
+              placeholder="Not fixed? Tell us what is still wrong (optional)"
+              style="min-height:70px"></textarea>
 
-                <textarea
-                  id="commentText"
-                  required
-                  placeholder="Write a reply..."
-                  style="min-height:80px"></textarea>
+          </div>
 
-              </div>
+          <div class="actions">
 
-              <button
-                class="primary"
-                style="width:auto"
-                id="sendReplyBtn" type="submit">
-                Send Reply
-              </button>
+            <button
+              class="btn blue"
+              id="confirmFixed">
+              Yes, it's fixed
+            </button>
 
-            </form>
+            <button
+              class="btn"
+              id="reopenTicket">
+              Not fixed
+            </button>
 
           </div>
 
@@ -484,9 +486,9 @@
         </div>
 
         <!-- DELETE -->
-        <div class="card hidden" id="deleteCard">
+        <details class="card hidden" id="deleteCard">
 
-          <h3>Delete Ticket</h3>
+          <summary>Submitted this by mistake?</summary>
 
           <p
             style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">
@@ -499,45 +501,47 @@
             Delete Ticket
           </button>
 
+        </details>
         </div>
 
-        <!-- STUDENT RESOLUTION -->
-        <div class="card hidden" id="resolveCard">
+        <div class="card conversation-card">
+          <div class="comments">
+            <p id="historyReadOnlyNotice" class="notice hidden">This ticket is in history. Its conversation and resolution are available for reference.</p>
 
-          <h3>Is your problem solved?</h3>
+            <h3>Conversation</h3>
 
-          <p
-            style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">
-            Staff marked this ticket as resolved. Confirm to close it,
-            or reopen it if the problem is still there.
-          </p>
+            <div id="commentList"></div>
 
-          <div class="field">
+            <form id="commentForm">
+              <p id="replyError" class="error" role="alert"></p>
 
-            <textarea
-              id="reopenReason"
-              placeholder="Not fixed? Tell us what is still wrong (optional)"
-              style="min-height:70px"></textarea>
+              <div class="field">
+
+                <textarea
+                  aria-label="Your reply" id="commentText"
+                  required
+                  placeholder="Write a reply..."
+                  style="min-height:80px"></textarea>
+
+              </div>
+<details class="reply-attachments"><summary>Attach screenshots (optional)</summary><div class="field"><label for="replyFiles">Screenshots (optional)</label><input id="replyFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="replyFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP.</p></div></details>
+
+
+              <button
+                class="primary"
+                style="width:auto"
+                id="sendReplyBtn" type="submit">
+                Send Reply
+              </button>
+
+            </form>
 
           </div>
 
-          <div class="actions">
-
-            <button
-              class="btn blue"
-              id="confirmFixed">
-              Yes, it's fixed
-            </button>
-
-            <button
-              class="btn"
-              id="reopenTicket">
-              Not fixed
-            </button>
-
-          </div>
-
         </div>
+
+
+
 
       </div>
 

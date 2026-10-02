@@ -803,6 +803,32 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 
 .auth-text-button{display:block;border:0;background:transparent;color:var(--blue);font:inherit;font-size:13px;padding:0;margin:16px auto;cursor:pointer}.auth-text-button:hover{text-decoration:underline}
 
-.topbar-actions{display:flex;align-items:center;gap:12px}.notification-count{display:inline-block;background:var(--red);color:white;padding:2px 7px;border-radius:99px;font-size:12px}.notification-item{display:block;width:100%;text-align:left;padding:12px;border:0;border-bottom:1px solid var(--border);background:white;cursor:pointer}.notification-item.unread{background:#eff6ff;font-weight:600}.notification-item small,.activity-item small{display:block;color:var(--muted);font-size:12px;margin-top:6px}.activity-item{border-left:2px solid #bfdbfe;padding:8px 0 16px 15px;font-size:13px}.section-heading{margin-top:20px}.screenshot-link{display:block;color:var(--blue);font-size:13px;margin:10px 0;overflow-wrap:anywhere}#notificationPanel{margin-bottom:24px}.ticket-detail .conversation-card{grid-row:1 / span 8}@media(max-width:650px){.topbar-actions{align-items:flex-end;flex-direction:column}.topbar-actions .user-pill{max-width:100%}}
+.topbar-actions{display:flex;align-items:center;gap:12px}.notification-count{display:inline-block;background:var(--red);color:white;padding:2px 7px;border-radius:99px;font-size:12px}.notification-item{display:block;width:100%;text-align:left;padding:12px;border:0;border-bottom:1px solid var(--border);background:white;cursor:pointer}.notification-item.unread{background:#eff6ff;font-weight:600}.notification-item small{display:block;color:var(--muted);font-size:12px;margin-top:6px}.section-heading{margin-top:20px}.screenshot-link{display:block;color:var(--blue);font-size:13px;margin:10px 0;overflow-wrap:anywhere}#notificationPanel{margin-bottom:24px}.ticket-detail .conversation-card{grid-row:1 / span 8}@media(max-width:650px){.topbar-actions{align-items:flex-end;flex-direction:column}.topbar-actions .user-pill{max-width:100%}}
 
-.help-about{margin-top:20px;color:var(--muted);font-size:12px;line-height:1.6}.help-about summary{cursor:pointer;width:fit-content}.help-about p{margin-top:8px}
+.help-intro{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.help-intro .primary{width:auto;min-width:160px;flex-shrink:0}
+.ticket-back{margin-bottom:18px}
+.ticket-info{display:flex;flex-direction:column;gap:16px;min-width:0}
+.ticket-detail .conversation-card{grid-column:2;grid-row:auto}
+.request-description{margin-top:22px;border-top:1px solid var(--border);padding-top:20px}
+.request-description p,.request-solution p{white-space:pre-wrap;line-height:1.7;font-size:14px;margin-top:10px;overflow-wrap:anywhere}
+.previous-solution,.request-screenshots{margin-top:20px;font-size:13px;color:var(--muted)}
+.previous-solution summary,.request-screenshots summary{cursor:pointer;font-weight:600}
+.previous-solution p{white-space:pre-wrap;line-height:1.7;margin-top:12px;overflow-wrap:anywhere}
+.student-view #detailContent>.info-row{padding:9px 0}
+.comment{padding:14px;margin-bottom:10px}
+.comment p{margin-top:8px}
+.conversation-card h3{margin-bottom:14px}
+.request-solution{margin-top:20px;padding:16px;background:#eff6ff;border-radius:10px}
+.student-ticket-status{margin:18px 0}
+.reply-attachments{margin-bottom:18px;font-size:13px}
+.reply-attachments summary,#deleteCard summary{cursor:pointer;color:var(--muted);font-weight:600}
+.reply-attachments .field{margin-top:12px}
+#commentForm{border-top:1px solid var(--border);margin-top:20px;padding-top:20px}
+#deleteCard p{margin-top:14px}
+.student-view #resolveCard{grid-row:2;border-color:#bfdbfe;background:#eff6ff}
+.student-view #deleteCard{grid-row:3}
+.student-view #tickets th:nth-child(3),.student-view #tickets td:nth-child(3),.student-view #tickets th:nth-child(4),.student-view #tickets td:nth-child(4),.student-view #tickets th:nth-child(7),.student-view #tickets td:nth-child(7),.student-view #ticketHistory th:nth-child(3),.student-view #ticketHistory td:nth-child(3),.student-view #ticketHistory th:nth-child(4),.student-view #ticketHistory td:nth-child(4),.student-view #ticketHistory th:nth-child(7),.student-view #ticketHistory td:nth-child(7){display:none}
+@media(max-width:900px){.student-view .ticket-detail{display:flex;flex-direction:column}.student-view .ticket-detail>.card{width:100%}.student-view #resolveCard{order:1}.student-view .conversation-card{order:2}.student-view #deleteCard{order:3}}
+@media(max-width:650px){.help-intro{align-items:flex-start;flex-direction:column}.help-intro .primary{width:100%}.student-view #tickets table,.student-view #ticketHistory table{min-width:540px}}
+@media(max-width:900px){.ticket-info{width:100%}.ticket-detail .conversation-card{grid-column:1;grid-row:auto}}

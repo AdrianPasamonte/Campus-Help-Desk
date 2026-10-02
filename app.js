@@ -533,7 +533,7 @@ function showView(name) {
       currentUser.role === "student"
         ? "My Tickets"
         : currentUser.role === "staff" ? departmentLabel(currentUser.department) + " Tickets" : "All Tickets",
-      "Search and manage submitted tickets"
+      currentUser.role === "student" ? "Track active requests and reply to support" : "Search and manage submitted tickets"
     ],
 
     ticketHistory: [
@@ -568,7 +568,7 @@ function showView(name) {
 
     ticketDetail: [
       "Ticket Details",
-      currentTicket && ["Resolved","Closed"].includes(currentTicket.status) ? "Review the request, conversation, and resolution" : "View, reply to and manage a support request"
+      currentTicket && ["Resolved","Closed"].includes(currentTicket.status) ? "Review your request and the support team's solution" : currentUser.role === "student" ? "Follow your request and reply to the support team" : "View, reply to and manage a support request"
     ]
 
   };
@@ -847,6 +847,7 @@ $("registerForm").addEventListener(
 function enterApp() {
   $("profileMessage").textContent = "";
   const studentHome = currentUser.role === "student";
+  $("app").classList.toggle("student-view", studentHome);
   $("helpHome").classList.toggle("hidden", !studentHome);
   $("staffDashboard").classList.toggle("hidden", studentHome);
   $("navHome").textContent = studentHome ? "⌂ Help Center" : "▦ Dashboard";
@@ -1114,8 +1115,9 @@ function openTicketDetails(ticket) {
 
   currentTicket = ticket;
   ticketScreenshotLinks=[];
-  $("ticketAttachments").innerHTML='<p class="empty">Loading screenshots…</p>';
-  $("ticketActivity").innerHTML='<p class="empty">Loading activity…</p>';
+  $("ticketAttachments").innerHTML="";
+  $("screenshotSection").classList.add("hidden");
+  $("screenshotSection").open=false;
   $("replyError").textContent = "";
   syncReplyControls();
   const historical = ["Resolved", "Closed"].includes(ticket.status);
@@ -1144,6 +1146,9 @@ function openTicketDetails(ticket) {
 
   const student =
     currentUser.role === "student";
+  $("deleteCard").open = false;
+  $("ticketBackBtn").textContent = historical ? "← Back to ticket history" : student ? "← Back to my tickets" : "← Back to tickets";
+
 
 
   $("deleteCard")
@@ -1530,11 +1535,7 @@ async function loadComments(
           ).toLocaleString()}
               </small>
 
-              <p>
-                ${escapeHtml(
-            c.message
-          )}
-              </p><div id="replyAttachments_${c.id}" class="screenshot-links"></div>
+              <p>${escapeHtml(c.message)}</p><div id="replyAttachments_${c.id}" class="screenshot-links"></div>
 
             </div>
 
@@ -2125,7 +2126,7 @@ $("homeFaqs").addEventListener("click", e => {
 // Supabase stores article content and enforces admin-only editing.
 function articleCard(f, studentLink = false) {
   const updated = new Date(f.updated_at).toLocaleDateString();
-  return '<details class="card faq"><summary><span class="eyebrow">' + escapeHtml(faqTopics[f.topic] || "Other") + '</span><h3>' + escapeHtml(f.title) + '</h3></summary><div class="faq-body"><h4>What you can do</h4><ol>' + f.steps.map(s=>'<li>' + escapeHtml(s) + '</li>').join('') + '</ol><h4>When to contact support</h4><p>' + escapeHtml(f.when) + '</p>' + (f.source_url && /^https:\/\//.test(f.source_url) ? '<a class="faq-source" href="' + escapeHtml(f.source_url) + '" target="_blank" rel="noopener noreferrer">Official guidance ↗</a>' : '') + '<p class="field-hint">Updated ' + escapeHtml(updated) + (f.editor?.full_name ? ' by ' + escapeHtml(f.editor.full_name) : '') + '</p>' + (studentLink ? '<button type="button" class="btn blue faq-ticket" data-faq-ticket="' + escapeHtml(f.id) + '">Still need help? Create a ticket</button>' : '') + '</div></details>';
+  return '<details class="card faq"><summary><span class="eyebrow">' + escapeHtml(faqTopics[f.topic] || "Other") + '</span><h3>' + escapeHtml(f.title) + '</h3></summary><div class="faq-body"><h4>What you can do</h4><ol>' + f.steps.map(s=>'<li>' + escapeHtml(s) + '</li>').join('') + '</ol><h4>When to contact support</h4><p>' + escapeHtml(f.when) + '</p>' + (f.source_url && /^https:\/\//.test(f.source_url) ? '<a class="faq-source" href="' + escapeHtml(f.source_url) + '" target="_blank" rel="noopener noreferrer">Official guidance ↗</a>' : '') + (studentLink ? '' : '<p class="field-hint">Updated ' + escapeHtml(updated) + (f.editor?.full_name ? ' by ' + escapeHtml(f.editor.full_name) : '') + '</p>') + (studentLink ? '<button type="button" class="btn blue faq-ticket" data-faq-ticket="' + escapeHtml(f.id) + '">Still need help? Create a ticket</button>' : '') + '</div></details>';
 }
 async function loadHelpArticles() {
   if (!currentUser) return;
@@ -2362,29 +2363,23 @@ function renderReplyScreenshots(){
  for(const attachment of ticketScreenshotLinks){if(!attachment.comment_id)continue;groups.set(attachment.comment_id,(groups.get(attachment.comment_id)||"")+attachment.html);}
  for(const [commentId,html] of groups){const el=$("replyAttachments_"+commentId);if(el)el.innerHTML=html;}
 }
-function activityText(event){
- const d=event.details || {};
- return {created:"Request created"+(d.before_tracking?" (before activity tracking)":""),assigned:"Assignment: "+d.from+" → "+d.to,transferred:"Transferred: "+departmentLabel(d.from)+" → "+departmentLabel(d.to),resolved:"Marked resolved",confirmed:"Student confirmed the solution and closed the request",reopened:"Student reopened the request",status_changed:"Status: "+d.from+" → "+d.to}[event.event_type] || "Ticket updated";
-}
+
 async function loadTicketExtras(ticketId){
  if(!currentUser || currentTicket?.id!==ticketId)return;
  const actorId=currentUser.id,seq=++extrasLoadSequence;
  renderScreenshotRetry();
  try{
-  const [attachments,activity]=await Promise.all([
-   sb.from("ticket_attachments").select("*").eq("ticket_id",ticketId).order("created_at"),
-   sb.from("ticket_activity").select("*").eq("ticket_id",ticketId).order("created_at").order("id")
-  ]);
+  const attachments=await sb.from("ticket_attachments").select("*").eq("ticket_id",ticketId).order("created_at");
   const links=await Promise.all((attachments.data || []).map(async a=>{
    const {data,error}=await sb.storage.from("ticket-screenshots").createSignedUrl(a.storage_path,120);
    return {...a,html:error || !data?.signedUrl || !data.signedUrl.startsWith("https://")?'<p class="field-hint">'+escapeHtml(a.file_name)+' — could not load. Reopen this ticket to retry.</p>':'<a class="screenshot-link" href="'+escapeHtml(data.signedUrl)+'" target="_blank" rel="noopener noreferrer">▧ '+escapeHtml(a.file_name)+'</a>'};
   }));
   if(currentUser?.id!==actorId || currentTicket?.id!==ticketId || seq!==extrasLoadSequence)return;
   ticketScreenshotLinks=links;
-  $("ticketAttachments").innerHTML=attachments.error?'<p class="empty">Could not load screenshots.</p>':links.filter(a=>!a.comment_id).map(a=>a.html).join('') || '<p class="empty">No screenshots attached to the original request.</p>';
+  $("ticketAttachments").innerHTML=attachments.error?'<p class="empty">Could not load screenshots.</p>':links.filter(a=>!a.comment_id).map(a=>a.html).join('') || '';
+  $("screenshotSection").classList.toggle("hidden",!attachments.error && !links.some(a=>!a.comment_id));
   renderReplyScreenshots();
-  $("ticketActivity").innerHTML=activity.error?'<p class="empty">Could not load activity.</p>':(activity.data || []).map(e=>'<div class="activity-item"><strong>'+escapeHtml(activityText(e))+'</strong><small>'+escapeHtml(e.actor_name)+' · '+escapeHtml(new Date(e.created_at).toLocaleString())+'</small></div>').join('') || '<p class="empty">No activity recorded.</p>';
- }catch(error){if(currentUser?.id===actorId && currentTicket?.id===ticketId && seq===extrasLoadSequence){$("ticketActivity").innerHTML='<p class="empty">Could not load ticket activity. Try reopening this ticket.</p>';$("ticketAttachments").innerHTML='<p class="empty">Could not load screenshots.</p>';}}
+ }catch(error){if(currentUser?.id===actorId && currentTicket?.id===ticketId && seq===extrasLoadSequence){$("ticketAttachments").innerHTML='<p class="field-hint">Could not load screenshots. Reopen this ticket to retry.</p>';$("screenshotSection").classList.remove("hidden");}}
 }
 function renderScopeReports(){
  const active=tickets.filter(t=>["Open","In Progress"].includes(t.status));
@@ -2454,6 +2449,7 @@ async function refreshSupportUpdates(){
    const historical=["Resolved","Closed"].includes(fresh.status);
    $("commentForm").classList.toggle("hidden",historical);$("historyReadOnlyNotice").classList.toggle("hidden",!historical);$("updateCard").classList.toggle("hidden",!canManageTicket(fresh));
    $("resolveCard").classList.toggle("hidden",!(currentUser.role==="student" && fresh.status==="Resolved"));
+   $("deleteCard").classList.toggle("hidden",!(currentUser.role==="student" && fresh.status==="Open"));
    await Promise.all([loadComments(ticketId),loadTicketExtras(ticketId)]);
   }
  }catch(error){console.error("Automatic support refresh failed",error);}
@@ -2462,119 +2458,36 @@ async function refreshSupportUpdates(){
 if(typeof setInterval==="function")setInterval(refreshSupportUpdates,20000);
 document.addEventListener?.("visibilitychange",()=>{if(!document.hidden)refreshSupportUpdates();});
 
+$("ticketBackBtn").addEventListener("click", () => {
+  showView(["Resolved", "Closed"].includes(currentTicket?.status) ? "ticketHistory" : "tickets");
+});
+
+function renderStudentTicketSummary(t) {
+  const guidance = {Open:"Waiting for the support team to review your request.", "In Progress":"The support team is working on your request.", Resolved:"A solution is ready. Confirm below whether it fixed your problem.", Closed:"This request is closed."};
+  return '<span class="eyebrow">REQUEST #'+t.id+'</span><h3>'+escapeHtml(t.subject)+'</h3><div class="student-ticket-status">'+badge(t.status)+'<p class="field-hint">'+(guidance[t.status] || "")+'</p></div>'
+    + '<div class="info-row"><span>Support team</span><b id="detailDepartmentLabel">'+escapeHtml(departmentLabel(t.department))+'</b></div>'
+    + '<div class="info-row"><span>Concern</span><b>'+escapeHtml(t.concern || t.category || "Other concern")+'</b></div>'
+    + '<div class="info-row"><span>Submitted</span><b>'+escapeHtml(new Date(t.created_at).toLocaleDateString())+'</b></div>'
+    + (t.assignee_name ? '<div class="info-row"><span>Handled by</span><b id="detailAssigneeLabel">'+escapeHtml(t.assignee_name)+'</b></div>' : '')
+    + '<div class="request-description"><h3>Problem description</h3><p>'+escapeHtml(t.description || "")+'</p></div>'
+    + renderTicketSolution(t);
+}
+
+function renderTicketSolution(t) {
+  if (!t.resolution_note) return "";
+  if (["Open", "In Progress"].includes(t.status)) return '<details class="previous-solution"><summary>Previous solution</summary><p>'+escapeHtml(t.resolution_note)+'</p></details>';
+  return '<div class="request-solution"><h3>Solution from support</h3><p>'+escapeHtml(t.resolution_note)+'</p></div>';
+}
+
 function renderTicketSummary(t) {
-  $("detailContent").innerHTML = `
-
-    <h3>
-      #${t.id} —
-      ${escapeHtml(t.subject)}
-    </h3>
-
-
-    <div class="info-row">
-      <span>Requester</span>
-      <b>
-        ${escapeHtml(
-    requesterName(t)
-  )}
-      </b>
-    </div>
-
-
-    <div class="info-row">
-      <span>Concern</span>
-      <b>
-        ${escapeHtml(t.concern || t.category)}
-      </b>
-    </div>
-
-
-    <div class="info-row"><span>Department</span><b id="detailDepartmentLabel">${escapeHtml(departmentLabel(t.department))}</b></div>
-    <div class="info-row">
-      <span>Status</span>
-      <b>
-        ${badge(t.status)}
-      </b>
-    </div>
-
-
-    <div class="info-row">
-      <span>Assigned To</span>
-      <b id="detailAssigneeLabel">
-        ${escapeHtml(
-    t.assignee_name ||
-    "Unassigned"
-  )}
-      </b>
-    </div>
-
-
-    ${t.reopen_count
-      ? `
-          <div class="info-row">
-            <span>Reopened</span>
-            <b>
-              ${t.reopen_count} time(s)
-            </b>
-          </div>
-        `
-      : ""
-    }
-
-
-    <div
-      style="
-        padding-top:18px;
-        white-space:pre-wrap;
-        line-height:1.6;
-        font-size:14px
-      ">
-
-      <b>Problem description</b>
-
-      <p
-        style="
-          margin-top:7px;
-          color:var(--muted)
-        ">
-
-        ${escapeHtml(
-      t.description
-    )}
-
-      </p>
-
-    </div>
-
-
-    ${t.resolution_note
-      ? `
-          <div
-            style="
-              padding-top:14px;
-              line-height:1.6;
-              font-size:14px
-            ">
-
-            <b>Resolution</b>
-
-            <p
-              style="
-                margin-top:7px;
-                color:var(--muted)
-              ">
-
-              ${escapeHtml(
-        t.resolution_note
-      )}
-
-            </p>
-
-          </div>
-        `
-      : ""
-    }
-
-  `;
-
+  if (currentUser.role === "student") { $("detailContent").innerHTML = renderStudentTicketSummary(t); return; }
+  $("detailContent").innerHTML = '<span class="eyebrow">REQUEST #'+t.id+'</span><h3>'+escapeHtml(t.subject)+'</h3>'
+    + '<div class="info-row"><span>Requester</span><b>'+escapeHtml(requesterName(t))+'</b></div>'
+    + '<div class="info-row"><span>Concern</span><b>'+escapeHtml(t.concern || t.category || "Other concern")+'</b></div>'
+    + '<div class="info-row"><span>Department</span><b id="detailDepartmentLabel">'+escapeHtml(departmentLabel(t.department))+'</b></div>'
+    + '<div class="info-row"><span>Status</span><b>'+badge(t.status)+'</b></div>'
+    + '<div class="info-row"><span>Assigned to</span><b id="detailAssigneeLabel">'+escapeHtml(t.assignee_name || "Unassigned")+'</b></div>'
+    + (t.reopen_count ? '<div class="info-row"><span>Reopened</span><b>'+t.reopen_count+' time(s)</b></div>' : '')
+    + '<div class="request-description"><h3>Problem description</h3><p>'+escapeHtml(t.description || "")+'</p></div>'
+    + renderTicketSolution(t);
 }
