@@ -823,6 +823,11 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 .ticket-info{display:flex;flex-direction:column;gap:16px;min-width:0}
 .ticket-detail .conversation-card{grid-column:2;grid-row:auto}
 .request-description{margin-top:22px;border-top:1px solid var(--border);padding-top:20px}
+.request-context{margin-top:22px;border-top:1px solid var(--border);padding-top:20px}
+.request-context dl{display:grid;gap:12px;font-size:14px}
+.request-context dl>div{display:grid;grid-template-columns:minmax(140px,1fr) minmax(0,2fr);gap:16px;line-height:1.6}
+.request-context dt{color:var(--muted)}.request-context dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:650px){.request-context dl>div{grid-template-columns:1fr;gap:2px}}
 .request-description p,.request-solution p{white-space:pre-wrap;line-height:1.7;font-size:14px;margin-top:10px;overflow-wrap:anywhere}
 .previous-solution,.request-screenshots{margin-top:20px;font-size:13px;color:var(--muted)}
 .previous-solution summary,.request-screenshots summary{cursor:pointer;font-weight:600}
