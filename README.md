@@ -1,62 +1,128 @@
-# Campus Help Desk
+# HelpDesk Pro
 
-Serve app.html through a local HTTP server or static website host. It connects to the configured Supabase project. Opening the file directly works for some flows, but email recovery requires an HTTP(S) address.
+A campus help desk and ticketing system built as a group class project. Students can find answers, submit concerns, and follow up with the appropriate support team.
 
-## Department queues
+The current scope uses student concerns at STI Ortigas-Cainta as its reference. This is a class project prototype, not an official school service. HelpDesk Pro remains the project name while the team reviews its branding and scope.
 
-- Account access, eLMS & SIMS, and Computer lab route to IT.
-- Student records & enrollment route to Registrar.
-- Fees & payments route to Finance / Cashier.
-- Something else / Not sure routes to Admin review.
+**[Open the website](https://adrianpasamonte.github.io/Campus-Help-Desk/app.html)**
 
-The database derives the department from the selected support area. Staff can read their department queue and history and update unassigned tickets or their own assignments. Admins can oversee and reroute all tickets. Students can only access their own requests and replies.
+## User roles
 
-## Manage staff
+| Role | Access |
+| --- | --- |
+| Student | Read FAQs, submit tickets, view their own requests, reply, and confirm or reopen a resolution. |
+| Staff | View their department's tickets and handle unassigned requests or requests assigned to them. |
+| Admin | Oversee all tickets, manage assignments and departments, create staff accounts, publish FAQs, and review reports. |
 
-As an admin, open Users. When creating a Staff account, select its department. Admin accounts oversee all departments and do not require a department.
+Public registration creates Student accounts only. Admins create Staff/Admin accounts. Students cannot be promoted; existing staff can be promoted to Admin.
 
-Student accounts cannot be promoted. Admins can promote an existing staff member by choosing Admin in the staff role dropdown and confirming the promotion; the department is then cleared because admins oversee all departments. For existing staff, choose Department in their row; the change saves automatically with an inline status. Use role filters and name/email search to find users. Staff without a department have no ticket queue access. When a role or department changes, assignments that no longer match return to their ticket queues. Staff should sign out and back in after a department change to refresh the interface; database restrictions use current profile settings immediately.
+## Support scope
 
-The two pre-existing staff accounts were left without a department. Assign their actual departments in Users. Existing tickets were retained and routed by their original categories; incompatible staff assignments were returned to the queues.
+Ticket creation starts with a general topic, then asks for a specific concern and the relevant details.
 
-## Database and checks
+| Topic | Examples | Routed to |
+| --- | --- | --- |
+| Account access | Forgotten school password, Authenticator problems, unavailable registered phone, verification-code issues | IT |
+| eLMS & SIMS | Website errors, unavailable handouts, failed assignment uploads, missing page content | IT |
+| Computer lab | Computers not starting, faulty peripherals, application issues, lab computer internet problems | IT |
+| Student records & enrollment | Document requests, enrollment questions, incorrect student records | Registrar |
+| Fees & payments | Unrecorded payments, fee or balance questions | Finance / Cashier |
+| Something else / Not sure | Concerns that do not fit the available choices | Admin review |
 
-The department changes have been applied to the configured Supabase project and recorded in its migration history. The SQL reference in database/department-routing.sql is intended for the original schema; do not rerun it on this already-updated project.
+The system records and routes requests. It does not directly reset school Microsoft accounts, change grades, process payments, or issue school documents. Office procedures and response schedules still need to be confirmed by the team.
 
-Run app logic checks with: node tests/department-ui.test.cjs
+## Main features
 
-Database access checks are in database/department-routing-tests.sql. They create temporary test fixtures inside a transaction and roll everything back. They have been run successfully against the live schema. Test fixtures cover student privacy, department queues, assignment validation, cross-department replies, admin rerouting, role changes, and resolution reopening.
+- **Student Help Center:** searchable FAQs, topic filters, and visible Create Ticket buttons.
+- **Guided ticket creation:** topic, concern, and questions specific to the problem.
+- **Department queues:** automatic routing and access restrictions for staff.
+- **Ticket conversations:** student and staff replies, with a Staff label on support replies.
+- **Screenshots:** attachments on tickets and replies, with validation and upload retry.
+- **Resolution confirmation:** students confirm a solution or reopen the request.
+- **Notifications:** unread badges for replies and ticket changes, with updates checked every 20 seconds while the app is visible.
+- **Account tools:** saved display names, confirmed email changes, password visibility, password confirmation, and email-based password recovery.
+- **FAQ management:** admins can draft, publish, unpublish, archive, and restore articles.
+- **Student ticket view:** a centered layout, separate problem and solution, expandable details, and a scrollable conversation.
 
-Staff/admin account creation uses the deployed create-staff-account Edge Function. It validates the caller session and current admin role, creates a new Auth user, and assigns its role server-side. Existing emails cannot be promoted. Its server-only service key is never sent to the browser.
+Screenshots support PNG, JPG, and WebP, with up to 3 files per submission and a maximum of 5 MB per file.
 
-Resolved/closed tickets are read-only, except the student confirmation/reopening workflow. Historical replies cannot be added.
+## Ticket workflow
 
-Run server account-creation checks with: node tests/staff-creation.test.cjs
+1. The student checks the Help Center or creates a ticket.
+2. The selected topic determines its department.
+3. Staff or an admin assigns and handles the request.
+4. The student and support team exchange replies and screenshots.
+5. Support marks the ticket **Resolved** with a required resolution note.
+6. The student selects **Yes, it's fixed** to close it, or **Not fixed** to reopen it.
 
-Browser appearance and manual account-login flows still need a visual check.
+Active tickets appear oldest first. Students do not select a priority. Staff cannot directly close tickets, and resolved/closed conversations are read-only. Students can delete their own Open tickets submitted by mistake.
 
-## Editable knowledge base
+## Dashboard and Reports
 
-Admins use Manage Articles to create or edit articles, save drafts, publish, unpublish, archive, and restore drafts. Instructions are entered one per line. Publishing requires an instruction and contact guidance. A matching ticket concern and an official HTTPS guidance link are optional. Concurrent edits are detected to prevent overwriting another admin's work.
+**Dashboard** supports daily work. It shows active, open, in-progress, and unassigned requests, plus the oldest requests needing attention.
 
-Students see published articles in Help Center; staff read the same content in Knowledge Base. Drafts and archived articles are restricted to admins by database policies. The ten existing articles were preserved. Last editor, update date, and revision are recorded by the database.
+**Reports** helps admins review patterns through a request-volume graph, department bars, and the five most reported concerns. Review periods include 7, 30, or 90 days, or all time.
 
-The help-articles migration is applied to the configured Supabase project. database/help-articles.sql is a reference, not a script to rerun. Permission and lifecycle tests in database/help-articles-tests.sql roll back all test fixtures. Run the editor checks with: node tests/help-articles.test.cjs
+Report periods use the ticket submission date. Charts display actual records and show an empty state when no requests fall within the selected period.
 
-## Workflow fixes
+## Technology
 
-Staff/admins mark a ticket Resolved with a resolution note. Only the requesting student can close it through Confirm fixed, or reopen it through the existing resolution response. The database rejects direct staff/admin closure. Previously closed tickets remain unchanged.
+- HTML, CSS, and JavaScript for the web interface.
+- Supabase for authentication, database records, access policies, private screenshot storage, and staff account creation.
+- GitHub for source control and GitHub Pages for frontend hosting.
+- Trello for team task coordination.
 
-Reply loading discards results from older requests and other tickets. Sending locks the composer, preserves text on failure, and never clears the draft on a different ticket.
+## Run the app
 
-Save Profile persists the name to the current user's profile. Email changes use Supabase Auth confirmation; the profile email follows the confirmed Auth email through a database trigger. A name save can succeed while an email change fails, and the interface reports this explicitly. Confirmation links use the project's existing Auth Site URL settings.
+### Hosted version
 
-Database references: database/workflow-fixes.sql and database/workflow-fixes-tests.sql. The migration is already applied; do not rerun it. Tests roll back their fixtures. Run frontend regression checks with: node tests/workflow-fixes.test.cjs
+Open [HelpDesk Pro](https://adrianpasamonte.github.io/Campus-Help-Desk/app.html). Use the full `app.html` address.
 
-## Password recovery
+### Local development
 
-Forgot password sends a Supabase Auth reset email with a redirect to the current app web URL plus ?recovery=1. Add that exact URL to Supabase Authentication > URL Configuration > Redirect URLs; configure Site URL to the app web address. Do this for each local/hosted address you use. Direct file URLs are rejected before requesting an email.
+1. Clone or download this repository.
+2. Serve the project folder through a local HTTP server.
+3. Open `app.html` through that server.
 
-The PASSWORD_RECOVERY event opens a dedicated reset screen instead of the normal dashboard. New passwords require confirmation and a valid recovery session; successful updates sign out locally and return to login. Invalid or expired links require a new recovery email. Refreshing a reset page after its recovery link has been consumed requires reopening a fresh link.
+There is no frontend build step. The app needs an internet connection to reach Supabase and load its client library.
 
-Checks: node tests/password-recovery.test.cjs. Email delivery and redirect settings need an end-to-end check after a web URL is configured. No real recovery emails were sent during automated checks.
+### Backend configuration
+
+This repository contains the frontend connected to the project's existing Supabase backend. Cloning the repository does not recreate that backend.
+
+For a different Supabase project, the team must configure its database, access policies, screenshot storage, and staff-creation function, then update the connection settings in `app.js`.
+
+Password recovery requires matching Supabase Authentication URL settings:
+
+- **Site URL:** `https://adrianpasamonte.github.io/Campus-Help-Desk/app.html`
+- **Allowed recovery redirect:** `https://adrianpasamonte.github.io/Campus-Help-Desk/app.html?recovery=1`
+
+Allow the corresponding local web address when testing recovery locally. Recovery links require HTTP(S); opening the HTML file directly is insufficient.
+
+## Repository files
+
+| File | Purpose |
+| --- | --- |
+| `app.html` | Pages, forms, dialogs, and interface structure |
+| `app.js` | App behavior and Supabase integration |
+| `style.css` | Layout, styling, and responsive views |
+| `.gitignore` | Excludes local development files and secrets |
+
+The public repository contains the app source and documentation. Local tests, database scripts, and Supabase helper files are excluded from GitHub.
+
+## Testing and feedback
+
+Test with separate Student, Staff, and Admin accounts. Staff testing should cover more than one department.
+
+- Register, sign in, sign out, recover a password, and save profile changes.
+- Search FAQs and test every ticket topic and its required questions.
+- Check ticket routing, assignment, transfers, and access restrictions.
+- Send replies, switch tickets quickly, and try repeated submission clicks.
+- Upload screenshots and test rejected files and failed-upload retries.
+- Resolve, confirm, reopen, and delete tickets under the allowed conditions.
+- Check notifications and automatic updates without losing a typed reply.
+- Test staff management and FAQ publishing permissions.
+- Compare dashboard counts and report graphs with the actual tickets.
+- Review readability, navigation, scrolling, and layouts on desktop and mobile.
+
+For each issue, record the account role, steps, expected result, actual result, and a screenshot. Also flag confusing wording, missing concerns, and unnecessary steps.
