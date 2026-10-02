@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HelpDesk Pro - Ticketing System</title>
+<title>Campus Help Desk - Ticketing System</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,25 +18,22 @@
       <div class="intro-brand">
         <div class="logo">HD</div>
         <div>
-          <h1>HelpDesk Pro</h1>
-          <p>Support & Ticketing System</p>
+          <h1>Campus Help Desk</h1>
+          <p>STI Ortigas-Cainta · Student Support</p>
         </div>
       </div>
 
       <div class="intro-content">
-        <div class="intro-label">Help desk automation</div>
+        <div class="intro-label">Campus support prototype</div>
 
         <h2>
-          Automate your<br>
-          help desk. Elevate<br>
-          support<br>
-          experiences.
+          Find answers.<br>
+          Get campus support.<br>
+          Track your request.
         </h2>
 
         <p>
-          Put your help desk operations on auto-pilot with
-          HelpDesk Pro. Cut down on manual effort and boost
-          productivity with high-value support.
+          Get help with school accounts, eLMS and SIMS, computer labs, student records, and fees. Your request goes to the relevant support team.
         </p>
       </div>
     </div>
@@ -49,8 +46,8 @@
         <div class="brand">
           <div class="logo">HD</div>
           <div>
-            <h1>HelpDesk Pro</h1>
-            <p>Support & Ticketing System</p>
+            <h1>Campus Help Desk</h1>
+            <p>STI Ortigas-Cainta · Student Support</p>
           </div>
         </div>
 
@@ -144,7 +141,7 @@
     <div class="side-brand">
       <div class="logo">HD</div>
       <div>
-        <b>HelpDesk Pro</b>
+        <b>Campus Help Desk</b>
         <small>Support System</small>
       </div>
     </div>
@@ -198,12 +195,13 @@
         <p id="pageSub">Overview of your support requests</p>
       </div>
 
-      <div class="user-pill">
+      <div class="topbar-actions"><button id="notificationBtn" class="btn" type="button" aria-expanded="false" aria-controls="notificationPanel">Notifications <span id="notificationCount" class="notification-count hidden">0</span></button><div class="user-pill">
         ●
         <span id="userName">User</span>
-      </div>
+      </div></div>
     </div>
 
+    <section id="notificationPanel" class="card hidden" aria-label="Notifications"><div class="actions"><h3>Notifications</h3><button id="markNotificationsRead" class="btn" type="button">Mark all read</button></div><p id="notificationError" class="error" role="status"></p><div id="notificationList"></div></section>
     <!-- DASHBOARD -->
     <section id="dashboard" class="view active">
 <div id="helpHome" class="hidden">
@@ -211,7 +209,7 @@
 <div class="field help-search"><label for="faqSearch">Search the knowledge base</label><input id="faqSearch" type="search" placeholder="Search passwords, eLMS, lab computers, payments..."></div>
 <div id="faqTopics" class="faq-topics" role="group" aria-label="Filter help articles by topic"></div>
 <div class="faq-results-heading"><h2>Help articles</h2><span id="faqResultCount" role="status" aria-live="polite"></span></div>
-<div id="homeFaqs" class="knowledge"></div>
+<div class="notice campus-guidance"><strong>Support for STI Ortigas-Cainta</strong><p>IT handles school account access, eLMS and SIMS technical issues, and computer lab concerns. Registrar handles records and enrollment. Finance / Cashier handles fees and payment concerns. If you are unsure, an administrator reviews your request.</p><p>This is a class project prototype, not an official school service. Requests appear oldest first. Response hours and processing times must be confirmed with the relevant office. For an issue affecting a class now, also tell your teacher or lab supervisor.</p></div><div id="homeFaqs" class="knowledge"></div>
 <div class="support-callout"><div><h2>Still need a hand?</h2><p>Tell us what happened. We’ll help you find the right support team.</p></div><button class="primary" data-go="create">＋ Create a ticket</button></div>
 </div>
 <div id="staffDashboard">
@@ -399,8 +397,9 @@
 
         <div class="card">
 
-          <div id="detailContent"></div>
+          <div id="detailContent"></div><h3 class="section-heading">Screenshots</h3><div id="ticketAttachments"></div><p id="attachmentUploadNotice" class="field-hint" role="status"></p><div id="attachmentRetryActions" class="actions hidden"><button id="retryAttachments" class="btn" type="button">Retry screenshots</button><button id="dismissAttachmentRetry" class="btn" type="button">Dismiss</button></div>
         </div>
+        <div class="card"><h3>Activity timeline</h3><div id="ticketActivity" class="activity-list"></div></div>
         <div class="card conversation-card">
           <div class="comments">
             <p id="historyReadOnlyNotice" class="notice hidden">This ticket is in history. Its conversation and resolution are available for reference.</p>
@@ -410,7 +409,7 @@
             <div id="commentList"></div>
 
             <form id="commentForm">
-              <p id="replyError" class="error" role="alert"></p>
+              <p id="replyError" class="error" role="alert"></p><div class="field"><label for="replyFiles">Screenshots (optional)</label><input id="replyFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="replyFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP.</p></div>
 
               <div class="field">
 
@@ -650,7 +649,7 @@
     <!-- REPORTS -->
     <section id="reports" class="view">
 
-      <div class="stats">
+      <p class="notice">All requests currently loaded. Waiting time means elapsed time since creation for active tickets; it is not a promised response time.</p><div class="stats"><div class="stat"><small>Average active waiting time</small><strong id="repWaiting">—</strong></div><div class="stat"><small>Oldest active request</small><strong id="repOldest">—</strong></div>
 
         <div class="stat">
           <small>Resolved / Closed</small>
@@ -678,7 +677,7 @@
 
         <div class="card">
 
-          <h3>By Category</h3>
+          <h3>By Department</h3>
 
           <div class="table-wrap">
 
@@ -686,8 +685,8 @@
 
               <thead>
                 <tr>
-                  <th>Category</th>
-                  <th>Tickets</th>
+                  <th>Department</th>
+                  <th>Tickets</th><th>Active</th><th>Avg Waiting</th>
                   <th>Avg Resolution</th>
                 </tr>
               </thead>
@@ -727,7 +726,7 @@
 
       </div>
 
-    </section>
+<div class="card"><h3>By Support Area</h3><div class="table-wrap"><table class="sm"><thead><tr><th>Area</th><th>Tickets</th><th>Active</th><th>Avg Resolution</th></tr></thead><tbody id="repArea"></tbody></table></div></div><div class="card"><h3>Common Concerns</h3><div class="table-wrap"><table class="sm"><thead><tr><th>Concern</th><th>Tickets</th><th>Active</th></tr></thead><tbody id="repConcern"></tbody></table></div></div>    </section>
 
     <!-- KNOWLEDGE BASE / ARTICLE MANAGEMENT -->
     <section id="knowledge" class="view">
@@ -788,7 +787,7 @@
     <fieldset id="ticketDetailsStep" class="ticket-details-panel hidden" disabled>
       <legend id="selectedConcernTitle">Tell us more</legend>
       <div id="requestFields" class="form-grid"></div>
-      <div class="ticket-description-fields">
+      <div class="ticket-description-fields"><div class="field"><label for="ticketFiles">Screenshots (optional)</label><input id="ticketFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="ticketFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP. Hide personal information, passwords, and verification codes.</p></div>
         <div class="field"><label for="subject">Subject <span aria-hidden="true">*</span></label><input id="subject" required maxlength="150" placeholder="A short summary of your concern"></div>
         <div class="field"><label for="description">Description <span aria-hidden="true">*</span></label><textarea id="description" required placeholder="Describe your concern and include any details that will help us understand it."></textarea></div>
         <p class="field-hint">Do not include passwords or verification codes.</p>
