@@ -1073,6 +1073,7 @@ function openTicketDetails(ticket) {
   if (!canReadTicket(ticket)) return;
 
   currentTicket = ticket;
+  $("commentList").scrollTop = 0;
   ticketScreenshotLinks=[];
   $("ticketAttachments").innerHTML="";
   $("screenshotSection").classList.add("hidden");

@@ -404,8 +404,7 @@
 
           <h3>Is your problem solved?</h3>
 
-          <p
-            style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">
+          <p class="resolution-prompt">
             Staff marked this ticket as resolved. Confirm to close it,
             or reopen it if the problem is still there.
           </p>
@@ -414,8 +413,7 @@
 
             <textarea
               aria-label="What still needs fixing (optional)" id="reopenReason"
-              placeholder="Not fixed? Tell us what is still wrong (optional)"
-              style="min-height:70px"></textarea>
+              placeholder="Not fixed? Tell us what is still wrong (optional)"></textarea>
 
           </div>
 
@@ -510,7 +508,7 @@
 
             <h3>Conversation</h3>
 
-            <div id="commentList"></div>
+            <div id="commentList" tabindex="0" role="region" aria-label="Conversation messages"></div>
 
             <form id="commentForm">
               <p id="replyError" class="error" role="alert"></p>

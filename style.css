@@ -844,3 +844,22 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 @media(max-width:900px){.student-view .ticket-detail{display:flex;flex-direction:column}.student-view .ticket-detail>.card{width:100%}.student-view #resolveCard{order:1}.student-view .conversation-card{order:2}.student-view #deleteCard{order:3}}
 @media(max-width:650px){.help-intro{align-items:flex-start;flex-direction:column}.help-intro .primary{width:100%}.student-view #tickets table,.student-view #ticketHistory table{min-width:540px}}
 @media(max-width:900px){.ticket-info{width:100%}.ticket-detail .conversation-card{grid-column:1;grid-row:auto}}
+
+/* A centered reading layout with a separate conversation scroll area. */
+.student-view #ticketDetail{width:100%;max-width:1080px;margin-inline:auto}
+.student-view .ticket-detail{display:flex;flex-direction:column;gap:24px}
+.student-view .ticket-info,.student-view .ticket-detail>.card{width:100%}
+.student-view .ticket-info>.card,.student-view .conversation-card{padding:28px}
+.student-view #detailContent>h3{line-height:1.4}
+.student-view #ticketDetail .card h3{font-size:18px}
+.student-view #ticketDetail #detailContent>h3{font-size:22px}
+.student-view #ticketDetail .info-row{font-size:14px;padding:12px 0}
+.student-view #ticketDetail .request-description p,.student-view #ticketDetail .request-solution p,.student-view #ticketDetail .previous-solution p,.student-view #ticketDetail .comment p{font-size:16px;line-height:1.7}
+.student-view #ticketDetail .field-hint,.student-view #resolveCard>p{font-size:14px}
+.resolution-prompt{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.student-view #ticketDetail textarea{font-size:16px;min-height:100px}
+#ticketDetail #commentList{max-height:480px;max-height:min(55dvh,480px);overflow-y:auto;scrollbar-gutter:stable;padding-right:10px}
+#ticketDetail #commentList:focus-visible{outline:2px solid #93c5fd;outline-offset:4px;border-radius:8px}
+.student-view #ticketDetail .comment{padding:18px;margin-bottom:14px}
+.student-view #ticketDetail .comment small{font-size:12px}
+@media(max-width:650px){.student-view .ticket-info>.card,.student-view .conversation-card{padding:20px}.student-view .ticket-detail{gap:18px}#ticketDetail #commentList{max-height:400px;max-height:min(50dvh,400px)}}
