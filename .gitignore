@@ -5,13 +5,7 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
-test-results/
-playwright-report/
-coverage/
-*.zip
-*.bak
-*PRIVATE*
+
+tests/
 database/
 supabase/
