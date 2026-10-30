@@ -1,0 +1,33 @@
+import { initNavigation } from './core/navigation.js';
+import { initSession } from './core/session.js';
+import { initUpdates } from './core/updates.js';
+import { initAuth, restoreSession } from './features/auth.js';
+import { initTicketApi, loadTickets } from './features/tickets/api.js';
+import { initTicketLists, render, renderTicketHistory } from './features/tickets/lists.js';
+import { initTicketCreation, openTicketDialog } from './features/tickets/creation.js';
+import { initTicketDetails, openTicketDetails, loadStaffList } from './features/tickets/details.js';
+import { initConversation, loadComments } from './features/tickets/conversation.js';
+import { initAttachments } from './features/tickets/attachments.js';
+import { initNotifications, loadNotifications } from './features/notifications.js';
+import { initKnowledge, loadHelpArticles, renderFaqs } from './features/knowledge.js';
+import { initUsers, loadUsers } from './features/users.js';
+import { initReports } from './features/reports.js';
+import { initProfile } from './features/profile.js';
+
+// Connect feature callbacks here so shared foundations do not import feature modules.
+initTicketApi({ render });
+initSession({ renderFaqs, loadStaffList, loadTickets, loadNotifications });
+initNavigation({ openTicketDialog, loadHelpArticles, loadUsers, loadTickets, renderTicketHistory });
+initAttachments({ loadComments });
+initNotifications({ openTicketDetails });
+initAuth();
+initTicketLists();
+initTicketCreation();
+initTicketDetails();
+initConversation();
+initKnowledge();
+initUsers();
+initReports();
+initProfile();
+initUpdates();
+await restoreSession();

@@ -1,0 +1,285 @@
+/* HelpDesk Pro: auth styles, including their responsive rules. */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgb(11, 27, 54);
+}
+
+.login-layout {
+  width: 100%;
+  max-width: 1250px;
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: 1fr 450px;
+  gap: 80px;
+  align-items: center;
+}
+
+.login-intro {
+  color: white;
+  padding: 20px 0px;
+}
+
+.intro-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 70px;
+}
+
+.intro-brand .logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgb(37, 99, 235);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.intro-brand h1 {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.intro-brand p {
+  font-size: 12px;
+  color: rgb(169, 184, 208);
+  margin-top: 2px;
+}
+
+.intro-content {
+  max-width: 600px;
+}
+
+.intro-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  margin-bottom: 28px;
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  border-radius: 30px;
+  color: rgb(143, 194, 255);
+  background: rgba(37, 99, 235, 0.12);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.intro-label::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(96, 165, 250);
+}
+
+.intro-content h2 {
+  font-size: 58px;
+  line-height: 1.08;
+  letter-spacing: -2px;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+.intro-content p {
+  max-width: 570px;
+  font-size: 18px;
+  line-height: 1.75;
+  color: rgb(224, 231, 241);
+}
+
+.login-form-area {
+  width: 100%;
+}
+
+.login-card {
+  width: 100%;
+  background: white;
+  padding: 38px;
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 20px 60px;
+}
+
+.login-card h2 {
+  margin-bottom: 8px;
+  font-size: 28px;
+  color: rgb(17, 24, 39);
+}
+
+.login-card .sub {
+  color: var(--muted);
+  margin-bottom: 27px;
+  font-size: 14px;
+}
+
+@media (max-width: 1000px) {
+  .login-layout {
+    grid-template-columns: 1fr 420px;
+    gap: 40px;
+  }
+
+  .intro-content h2 {
+    font-size: 48px;
+  }
+
+  .intro-content p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .login-page {
+    padding: 30px 20px;
+  }
+
+  .login-layout {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    gap: 30px;
+  }
+
+  .login-intro {
+    text-align: center;
+  }
+
+  .intro-brand {
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .intro-content {
+    max-width: 100%;
+  }
+
+  .intro-label {
+    margin-bottom: 18px;
+  }
+
+  .intro-content h2 {
+    font-size: 42px;
+    letter-spacing: -1px;
+  }
+
+  .intro-content p {
+    margin: auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .login-page {
+    padding: 20px 14px;
+  }
+
+  .login-layout {
+    gap: 20px;
+  }
+
+  .intro-brand {
+    margin-bottom: 20px;
+  }
+
+  .intro-content h2 {
+    font-size: 34px;
+  }
+
+  .intro-content p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .login-card {
+    padding: 28px 22px;
+  }
+
+  .login-card h2 {
+    font-size: 24px;
+  }
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 52px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0px;
+  background: transparent;
+  color: var(--muted);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: rgb(239, 246, 255);
+  color: var(--blue);
+}
+
+.password-toggle:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 0px;
+}
+
+.password-match {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0px 0px 16px;
+}
+
+.password-match:empty {
+  display: none;
+}
+
+.password-match.match {
+  color: var(--green);
+}
+
+.password-match.mismatch {
+  color: var(--red);
+}
+
+.auth-text-button {
+  display: block;
+  border: 0px;
+  background: transparent;
+  color: var(--blue);
+  font-style: inherit;
+  font-variant: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  font-optical-sizing: inherit;
+  font-size-adjust: inherit;
+  font-kerning: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-language-override: inherit;
+  font-size: 13px;
+  padding: 0px;
+  margin: 16px auto;
+  cursor: pointer;
+}
+
+.auth-text-button:hover {
+  text-decoration: underline;
+}

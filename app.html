@@ -4,10 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HelpDesk Pro - Ticketing System</title>
-<link rel="stylesheet" href="style.css">
+<script src="./js/local-launch.js"></script>
+<!-- Shared styles first; feature styles follow. -->
+<link rel="stylesheet" href="./css/base.css">
+<link rel="stylesheet" href="./css/layout.css">
+<link rel="stylesheet" href="./css/components.css">
+<link rel="stylesheet" href="./css/auth.css">
+<link rel="stylesheet" href="./css/tickets.css">
+<link rel="stylesheet" href="./css/knowledge.css">
+<link rel="stylesheet" href="./css/reports.css">
 </head>
 
 <body>
+
+<section id="localFileNotice" class="local-file-notice" aria-labelledby="localFileTitle">
+  <h1 id="localFileTitle">Start HelpDesk Pro with its launcher</h1>
+  <p>This copy uses JavaScript modules and needs a local web server.</p>
+  <ol><li>Open this folder and double-click <strong>Start-HelpDesk.cmd</strong>.</li><li>The launcher opens the app in your browser. Keep its server window running.</li></ol>
+  <p>If the server is already running, open the preview below.</p>
+  <a class="btn blue" href="http://127.0.0.1:5504/app.html">Open local preview</a>
+</section>
 
 <!-- LOGIN / REGISTER -->
 <div id="loginPage" class="login-page">
@@ -756,7 +772,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- JAVASCRIPT -->
-<script src="app.js"></script>
+<script type="module" src="./js/main.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,265 @@
+/* HelpDesk Pro: knowledge styles, including their responsive rules. */
+
+.knowledge {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .knowledge {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .knowledge {
+    grid-template-columns: 1fr;
+  }
+}
+
+.help-intro {
+  padding: 16px 0px 28px;
+}
+
+.help-intro h1 {
+  font-size: 34px;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+.help-intro p,
+.support-callout p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.help-search {
+  max-width: 620px;
+  margin-bottom: 24px;
+}
+
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq summary::after {
+  content: "＋";
+  color: var(--blue);
+}
+
+.faq[open] summary::after {
+  content: "−";
+}
+
+.faq h3 {
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.faq p {
+  line-height: 1.7;
+  font-size: 14px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 12px;
+}
+
+.support-callout {
+  margin-top: 28px;
+  padding: 28px;
+  border: 1px solid rgb(191, 219, 254);
+  border-radius: 14px;
+  background: rgb(239, 246, 255);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.support-callout h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.support-callout .primary {
+  width: auto;
+  min-width: 190px;
+  flex-shrink: 0;
+  padding: 16px 24px;
+  box-shadow: rgba(37, 99, 235, 0.145) 0px 4px 12px;
+}
+
+@media (max-width: 1000px) {
+  #homeFaqs {
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .support-callout {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 650px) {
+  #homeFaqs {
+    grid-template-columns: 1fr;
+  }
+
+  .help-intro h1 {
+    font-size: 28px;
+  }
+
+  .support-callout .primary {
+    width: 100%;
+  }
+
+  .support-callout {
+    padding: 20px;
+  }
+}
+
+.faq-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.faq-topic {
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+
+.faq-topic.selected {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+
+.faq-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.faq-results-heading h2 {
+  font-size: 19px;
+}
+
+.faq-results-heading span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#homeFaqs {
+  align-items: start;
+}
+
+.faq-body {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 12px;
+}
+
+.faq-body h4 {
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.faq-body ol {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.faq-body li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.faq .faq-body p {
+  border: 0px;
+  padding: 0px;
+  margin: 0px 0px 16px;
+}
+
+.faq-source {
+  display: block;
+  font-size: 12px;
+  color: var(--blue);
+  margin-bottom: 18px;
+}
+
+.faq-ticket {
+  width: 100%;
+  line-height: 1.5;
+}
+
+.faq-no-results {
+  grid-column: 1 / -1;
+}
+
+.faq-no-results p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.article-status {
+  display: inline-block;
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.article-status.draft {
+  background: rgb(254, 243, 199);
+  color: rgb(146, 64, 14);
+}
+
+.article-status.published {
+  background: rgb(220, 252, 231);
+  color: rgb(22, 101, 52);
+}
+
+.article-status.archived {
+  background: rgb(229, 231, 235);
+  color: rgb(55, 65, 81);
+}
+
+#knowledgeMessage {
+  margin-bottom: 16px;
+}
+
+.help-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.help-intro .primary {
+  width: auto;
+  min-width: 160px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 650px) {
+  .help-intro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .help-intro .primary {
+    width: 100%;
+  }
+}

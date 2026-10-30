@@ -1,0 +1,421 @@
+/* HelpDesk Pro: components styles, including their responsive rules. */
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--blue);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 13px;
+  background: white;
+  color: var(--text);
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(167, 173, 184);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--blue);
+  box-shadow: rgba(37, 99, 235, 0.1) 0px 0px 0px 3px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.primary {
+  width: 100%;
+  border: 0px;
+  background: var(--blue);
+  color: rgb(255, 255, 255);
+  padding: 13px;
+  border-radius: 9px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.primary:hover {
+  background: var(--blue2);
+  transform: translateY(-1px);
+}
+
+.toggle-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.toggle-link a {
+  color: var(--blue);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toggle-link a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.logout {
+  width: 100%;
+  border: 1px solid rgb(55, 65, 81);
+  background: transparent;
+  color: rgb(203, 213, 225);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 20px;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid rgb(238, 240, 243);
+  font-size: 13px;
+}
+
+th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.open {
+  background: rgb(219, 234, 254);
+  color: rgb(29, 78, 216);
+}
+
+.progress {
+  background: rgb(237, 233, 254);
+  color: rgb(109, 40, 217);
+}
+
+.closed {
+  background: rgb(254, 226, 226);
+  color: rgb(185, 28, 28);
+}
+
+.priority-high {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.priority-medium {
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+.priority-low {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: white;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.btn.blue {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.toolbar input {
+  max-width: 280px;
+}
+
+.toolbar select {
+  max-width: 180px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.article {
+  cursor: pointer;
+}
+
+.article p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.profile {
+  max-width: 650px;
+}
+
+.notice {
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: rgb(239, 246, 255);
+  color: rgb(29, 78, 216);
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+.empty {
+  text-align: center;
+  padding: 35px;
+  color: var(--muted);
+}
+
+@media (max-width: 650px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+}
+
+.eyebrow {
+  display: block;
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.field-hint {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.field-hint {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.primary.danger {
+  background: var(--red);
+}
+
+button:focus-visible,
+summary:focus-visible {
+  outline: rgb(147, 197, 253) solid 3px;
+  outline-offset: 3px;
+}
+
+.dialog-close {
+  align-self: flex-start;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: white;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  font-size: 24px;
+  color: var(--muted);
+}
+
+#articleForm .form-grid {
+  gap: 14px;
+}
+
+#articleEditorMeta {
+  margin-top: 10px;
+}
+
+body:has(#articleDialog[open]) {
+  overflow: hidden;
+}
+
+#regConfirmPass.match {
+  border-color: var(--green);
+}
+
+#regConfirmPass.mismatch {
+  border-color: var(--red);
+}
+
+.notification-count {
+  display: inline-block;
+  background: var(--red);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-size: 12px;
+}
+
+.notification-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border-top: 0px;
+  border-right: 0px;
+  border-left: 0px;
+  border-image: none;
+  border-bottom: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+}
+
+.notification-item.unread {
+  background: rgb(239, 246, 255);
+  font-weight: 600;
+}
+
+.notification-item small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.section-heading {
+  margin-top: 20px;
+}
+
+#notificationPanel {
+  margin-bottom: 24px;
+}
+
+.previous-solution {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.previous-solution summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.previous-solution p {
+  white-space: pre-wrap;
+  line-height: 1.7;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+#deleteCard summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+#deleteCard p {
+  margin-top: 14px;
+}
+
+.student-view #deleteCard {
+  grid-row: 3;
+}
+
+@media (max-width: 900px) {
+  .student-view #deleteCard {
+    order: 3;
+  }
+}
+
+.resolution-prompt {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}

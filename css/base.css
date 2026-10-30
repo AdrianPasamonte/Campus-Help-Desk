@@ -1,0 +1,86 @@
+/* HelpDesk Pro: base styles, including their responsive rules. */
+
+.local-file-notice {
+  display: none;
+}
+
+.local-file-mode #loginPage,
+.local-file-mode #app {
+  display: none !important;
+}
+
+.local-file-mode .local-file-notice {
+  display: block;
+  max-width: 620px;
+  margin: 48px auto;
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  line-height: 1.7;
+}
+
+.local-file-notice h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.local-file-notice p,
+.local-file-notice ol {
+  margin-bottom: 16px;
+}
+
+.local-file-notice ol {
+  padding-left: 22px;
+}
+
+.local-file-notice a {
+  display: inline-block;
+  text-decoration: none;
+}
+
+@media (max-width: 650px) {
+  .local-file-mode .local-file-notice {
+    margin: 20px 14px;
+    padding: 22px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+:root {
+  --blue: #2563eb;
+  --blue2: #1d4ed8;
+  --bg: #f5f7fb;
+  --card: #fff;
+  --text: #172033;
+  --muted: #667085;
+  --border: #e5e7eb;
+  --green: #16a34a;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --purple: #7c3aed;
+}
+
+body {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
