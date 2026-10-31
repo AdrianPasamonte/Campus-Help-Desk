@@ -2322,13 +2322,39 @@ async function markTicketNotificationsRead(ticketId){
  try{const {error}=await sb.from("ticket_notifications").update({is_read:true}).eq("recipient_id",currentUser.id).eq("ticket_id",ticketId);if(!error)await loadNotifications();}
  catch(error){$("notificationError").textContent="Could not mark this request's notifications as read.";}
 }
+function positionNotifications(){
+ const margin=window.innerWidth<=650?16:24;
+ const trigger=$("notificationBtn").getBoundingClientRect();
+ const top=Math.min(Math.max(16,trigger.bottom+12),Math.max(16,window.innerHeight-180));
+ $("notificationPanel").style.top=top+"px";
+ $("notificationPanel").style.right=margin+"px";
+ $("notificationPanel").style.maxHeight=Math.min(560,Math.max(0,window.innerHeight-top-margin))+"px";
+}
+function closeNotifications(restoreFocus=false){
+ $("notificationPanel").classList.add("hidden");
+ $("notificationBtn").setAttribute("aria-expanded","false");
+ if(restoreFocus)$("notificationBtn").focus();
+}
 $("notificationBtn").addEventListener("click",()=>{
- const open=$("notificationPanel").classList.contains("hidden");$("notificationPanel").classList.toggle("hidden",!open);$("notificationBtn").setAttribute("aria-expanded",String(open));if(open)loadNotifications();
+ const open=$("notificationPanel").classList.contains("hidden");
+ if(!open){closeNotifications();return;}
+ $("notificationPanel").classList.remove("hidden");
+ $("notificationBtn").setAttribute("aria-expanded","true");
+ positionNotifications();
+ loadNotifications();
 });
+$("closeNotifications").addEventListener("click",()=>closeNotifications(true));
+document.addEventListener("click",event=>{
+ if(!event.target.closest("#notificationPanel, #notificationBtn"))closeNotifications();
+});
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"&&!$("notificationPanel").classList.contains("hidden")){event.preventDefault();closeNotifications(true);}
+});
+window.addEventListener("resize",()=>{if(!$("notificationPanel").classList.contains("hidden"))positionNotifications();});
 $("notificationList").addEventListener("click",async e=>{
  const button=e.target.closest("[data-notification-ticket]");if(!button || !currentUser)return;
  await loadTickets();const ticket=tickets.find(t=>String(t.id)===button.dataset.notificationTicket);
- if(ticket){openTicketDetails(ticket);$("notificationPanel").classList.add("hidden");$("notificationBtn").setAttribute("aria-expanded","false");}
+ if(ticket){openTicketDetails(ticket);closeNotifications();}
  else $("notificationError").textContent="This request is no longer available to your account.";
 });
 $("markNotificationsRead").addEventListener("click",async()=>{

@@ -877,3 +877,18 @@ body:has(.ticket-dialog[open]){overflow:hidden}
 .student-view #historyReadOnlyNotice{display:none}
 @media(max-width:650px){.ticket-metadata dl>div{grid-template-columns:1fr;gap:2px}}
 @media(max-width:650px){.student-view .ticket-info>.card,.student-view .conversation-card{padding:20px}.student-view .ticket-detail{gap:18px}#ticketDetail #commentList{max-height:400px;max-height:min(50dvh,400px)}}
+
+#notificationPanel{position:fixed;z-index:50;top:80px;right:24px;width:min(410px,calc(100% - 32px));max-height:min(70dvh,560px);margin:0;padding:20px;display:flex;flex-direction:column;gap:12px;overflow:hidden;box-shadow:0 12px 36px #17203326}
+.notification-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.notification-heading h3{margin:0;font-size:16px}
+.notification-close{width:30px;height:30px;padding:0;font-size:22px;line-height:1;flex-shrink:0}
+#markNotificationsRead{align-self:flex-start;flex-shrink:0;font-size:12px}
+#notificationError:empty{display:none}
+#notificationError{margin:0;font-size:13px;flex-shrink:0}
+#notificationList{min-height:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px}
+.notification-item{border:1px solid var(--border);border-radius:6px;padding:12px 20px;line-height:1.5;overflow-wrap:anywhere;flex-shrink:0}
+.notification-item:hover{background:#eff6ff}
+.notification-item:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.notification-item small{font-weight:400;line-height:1.5}
+#notificationList>.empty{padding:16px 8px;font-size:13px}
+@media(max-width:650px){#notificationPanel{right:16px;padding:16px}}
