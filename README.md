@@ -1,128 +1,163 @@
+<div align="center">
+
 # HelpDesk Pro
 
-A campus help desk and ticketing system built as a group class project. Students can find answers, submit concerns, and follow up with the appropriate support team.
+**Campus support, all in one place.**
 
-The current scope uses student concerns at STI Ortigas-Cainta as its reference. This is a class project prototype, not an official school service. HelpDesk Pro remains the project name while the team reviews its branding and scope.
+Find answers, submit a ticket, and follow your request from the first reply to resolution.
 
-**[Open the website](https://adrianpasamonte.github.io/Campus-Help-Desk/app.html)**
+**A BSIT 2-104 school group project · Class project prototype**
+
+[Open the web app](https://adrianpasamonte.github.io/Campus-Help-Desk/app.html) · [Features](#features) · [Screenshots](#screenshots) · [Run locally](#run-locally)
+
+</div>
+
+![HelpDesk Pro Campus Help Center with knowledge-base search, topics, and ticket creation](docs/screenshots/student-help-center.png)
+
+## About the project
+
+HelpDesk Pro is a campus help desk and ticketing web application developed as a **school group project**. It uses student concerns at STI Ortigas-Cainta as its reference, connecting Students with IT, Registrar, and Finance / Cashier support workflows.
+
+This is a class project prototype and is **not an official school service**. It records and routes concerns; it does not reset school accounts, change grades, process payments, or issue school documents. School procedures and office response schedules still need to be confirmed by the team.
+
+## Features
+
+- [x] Separate Student, Staff, and Admin workflows.
+- [x] Searchable knowledge base with campus topics and guided support articles.
+- [x] Guided ticket creation and automatic department routing.
+- [x] Ticket history with active, resolved, and closed requests.
+- [x] Ticket conversations with a reply composer and submitted-details disclosure.
+- [x] Image attachments, previews, individual removal, validation, and upload retry.
+- [x] Bell icon, floating notifications, unread indicators, and ticket links.
+- [x] Assignment, department transfer, and resolution handling.
+- [x] Student confirmation to close a resolved ticket or reopen it if the issue remains.
+- [x] Admin tools for Staff accounts, article publishing, and reports.
+- [x] Responsive layouts, compact navigation, and floating confirmation dialogs.
+
+Attachments support PNG, JPEG, and WebP: **up to 3 images per submission, 5 MB per image**. Files are stored privately in Supabase and opened through temporary signed URLs.
+
+## Screenshots
+
+Screenshots show the current interface using **synthetic demonstration accounts and records**. They do not contain real student tickets or account credentials. The hosted application uses the existing project backend; these screenshot fixtures are not included in the public app.
+
+### Ticket conversation
+
+Request information and the conversation sit side by side on wider screens. Submitted form answers remain available under **View submitted details**.
+
+![Student ticket details beside the support conversation and reply composer](docs/screenshots/ticket-conversation.png)
+
+<details>
+<summary><strong>Staff department tickets and notifications</strong></summary>
+
+Staff review tickets routed to their department, while the notification panel links directly to updated requests.
+
+![Staff Department Tickets with search, status filters, and ticket actions](docs/screenshots/staff-department-tickets.png)
+
+![Bell notification panel with subject-first activity and unread controls](docs/screenshots/notifications.png)
+
+</details>
+
+<details>
+<summary><strong>Admin reports</strong></summary>
+
+Admins can review request volume, department workload, and commonly reported concerns.
+
+![Admin reports with request volume and department charts](docs/screenshots/admin-reports.png)
+
+</details>
+
+<details>
+<summary><strong>Sign-in and mobile layout</strong></summary>
+
+![HelpDesk Pro sign-in page](docs/screenshots/sign-in.png)
+
+<p align="center"><img src="docs/screenshots/mobile-ticket.png" width="300" alt="Student ticket details and conversation stacked on a phone"></p>
+
+</details>
 
 ## User roles
 
-| Role | Access |
+| Role | Main responsibilities |
 | --- | --- |
-| Student | Read FAQs, submit tickets, view their own requests, reply, and confirm or reopen a resolution. |
-| Staff | View their department's tickets and handle unassigned requests or requests assigned to them. |
-| Admin | Oversee all tickets, manage assignments and departments, create staff accounts, publish FAQs, and review reports. |
+| **Student** | Search help articles, create requests, view their own ticket history, send replies and screenshots, and confirm or reopen a resolution. |
+| **Staff** | View department tickets and handle eligible unassigned requests or requests assigned to them. Tickets assigned to another staff member remain read-only. |
+| **Admin** | Oversee all departments, assign and transfer tickets, create Staff/Admin accounts, maintain articles, and review reports. |
 
-Public registration creates Student accounts only. Admins create Staff/Admin accounts. Students cannot be promoted; existing staff can be promoted to Admin.
+Public registration creates Student accounts. Staff/Admin accounts are created through the Admin workflow. Frontend controls reflect each role; the existing backend access policies and functions enforce access separately.
 
-## Support scope
+## How a request works
 
-Ticket creation starts with a general topic, then asks for a specific concern and the relevant details.
+1. A Student searches the Campus Help Center or chooses **Create a ticket**.
+2. The selected topic and concern guide the form and route the request.
+3. Staff or an Admin reviews the request and exchanges replies with the Student.
+4. Support marks the ticket **Resolved**, including a resolution note.
+5. The Student confirms it is fixed to close the request, or reopens it for further help.
 
-| Topic | Examples | Routed to |
-| --- | --- | --- |
-| Account access | Forgotten school password, Authenticator problems, unavailable registered phone, verification-code issues | IT |
-| eLMS & SIMS | Website errors, unavailable handouts, failed assignment uploads, missing page content | IT |
-| Computer lab | Computers not starting, faulty peripherals, application issues, lab computer internet problems | IT |
-| Student records & enrollment | Document requests, enrollment questions, incorrect student records | Registrar |
-| Fees & payments | Unrecorded payments, fee or balance questions | Finance / Cashier |
-| Something else / Not sure | Concerns that do not fit the available choices | Admin review |
-
-The system records and routes requests. It does not directly reset school Microsoft accounts, change grades, process payments, or issue school documents. Office procedures and response schedules still need to be confirmed by the team.
-
-## Main features
-
-- **Student Help Center:** searchable FAQs, topic filters, and visible Create Ticket buttons.
-- **Guided ticket creation:** topic, concern, and questions specific to the problem.
-- **Department queues:** automatic routing and access restrictions for staff.
-- **Ticket conversations:** student and staff replies, with a Staff label on support replies.
-- **Screenshots:** attachments on tickets and replies, with validation and upload retry.
-- **Resolution confirmation:** students confirm a solution or reopen the request.
-- **Notifications:** unread badges for replies and ticket changes, with updates checked every 20 seconds while the app is visible.
-- **Account tools:** saved display names, confirmed email changes, password visibility, password confirmation, and email-based password recovery.
-- **FAQ management:** admins can draft, publish, unpublish, archive, and restore articles.
-- **Student ticket view:** a centered layout, separate problem and solution, expandable details, and a scrollable conversation.
-
-Screenshots support PNG, JPG, and WebP, with up to 3 files per submission and a maximum of 5 MB per file.
-
-## Ticket workflow
-
-1. The student checks the Help Center or creates a ticket.
-2. The selected topic determines its department.
-3. Staff or an admin assigns and handles the request.
-4. The student and support team exchange replies and screenshots.
-5. Support marks the ticket **Resolved** with a required resolution note.
-6. The student selects **Yes, it's fixed** to close it, or **Not fixed** to reopen it.
-
-Active tickets appear oldest first. Students do not select a priority. Staff cannot directly close tickets, and resolved/closed conversations are read-only. Students can delete their own Open tickets submitted by mistake.
-
-## Dashboard and Reports
-
-**Dashboard** supports daily work. It shows active, open, in-progress, and unassigned requests, plus the oldest requests needing attention.
-
-**Reports** helps admins review patterns through a request-volume graph, department bars, and the five most reported concerns. Review periods include 7, 30, or 90 days, or all time.
-
-Report periods use the ticket submission date. Charts display actual records and show an empty state when no requests fall within the selected period.
+| Support topic | Destination |
+| --- | --- |
+| Account access, eLMS & SIMS, computer lab | IT |
+| Student records & enrollment | Registrar |
+| Fees & payments | Finance / Cashier |
+| Others | Admin review |
 
 ## Technology
 
-- HTML, CSS, and JavaScript for the web interface.
-- Supabase for authentication, database records, access policies, private screenshot storage, and staff account creation.
-- GitHub for source control and GitHub Pages for frontend hosting.
-- Trello for team task coordination.
-
-## Run the app
-
-### Hosted version
-
-Open [HelpDesk Pro](https://adrianpasamonte.github.io/Campus-Help-Desk/app.html). Use the full `app.html` address.
-
-### Local development
-
-1. Clone or download this repository.
-2. Serve the project folder through a local HTTP server.
-3. Open `app.html` through that server.
-
-There is no frontend build step. The app needs an internet connection to reach Supabase and load its client library.
-
-### Backend configuration
-
-This repository contains the frontend connected to the project's existing Supabase backend. Cloning the repository does not recreate that backend.
-
-For a different Supabase project, the team must configure its database, access policies, screenshot storage, and staff-creation function, then update the connection settings in `app.js`.
-
-Password recovery requires matching Supabase Authentication URL settings:
-
-- **Site URL:** `https://adrianpasamonte.github.io/Campus-Help-Desk/app.html`
-- **Allowed recovery redirect:** `https://adrianpasamonte.github.io/Campus-Help-Desk/app.html?recovery=1`
-
-Allow the corresponding local web address when testing recovery locally. Recovery links require HTTP(S); opening the HTML file directly is insufficient.
-
-## Repository files
-
-| File | Purpose |
+| Layer | Technology |
 | --- | --- |
-| `app.html` | Pages, forms, dialogs, and interface structure |
-| `app.js` | App behavior and Supabase integration |
-| `style.css` | Layout, styling, and responsive views |
-| `.gitignore` | Excludes local development files and secrets |
+| Interface | HTML, CSS, JavaScript |
+| Authentication and data | Supabase Auth and PostgreSQL |
+| Access control | Supabase database policies and server-side functions |
+| Attachments | Private Supabase Storage |
+| Frontend hosting | GitHub Pages |
 
-The public repository contains the app source and documentation. Local tests, database scripts, and Supabase helper files are excluded from GitHub.
+The frontend has **three application source files** and no build step. The pinned Supabase JavaScript client **2.119.0** is bundled inside `app.js`, with its MIT notice retained.
 
-## Testing and feedback
+```text
+Campus-Help-Desk/
+├── app.html              # Screens, forms, and dialogs
+├── app.js                # Application behavior and Supabase integration
+├── style.css             # Styling and responsive layouts
+├── docs/screenshots/     # Images used in this README
+├── README.md
+└── .gitignore
+```
 
-Test with separate Student, Staff, and Admin accounts. Staff testing should cover more than one department.
+## Run locally
 
-- Register, sign in, sign out, recover a password, and save profile changes.
-- Search FAQs and test every ticket topic and its required questions.
-- Check ticket routing, assignment, transfers, and access restrictions.
-- Send replies, switch tickets quickly, and try repeated submission clicks.
-- Upload screenshots and test rejected files and failed-upload retries.
-- Resolve, confirm, reopen, and delete tickets under the allowed conditions.
-- Check notifications and automatic updates without losing a typed reply.
-- Test staff management and FAQ publishing permissions.
-- Compare dashboard counts and report graphs with the actual tickets.
-- Review readability, navigation, scrolling, and layouts on desktop and mobile.
+Requirements: a modern browser, an internet connection for Supabase, and a local HTTP server. Python 3 is one option; VS Code Live Server also works.
 
-For each issue, record the account role, steps, expected result, actual result, and a screenshot. Also flag confusing wording, missing concerns, and unnecessary steps.
+```bash
+git clone https://github.com/AdrianPasamonte/Campus-Help-Desk.git
+cd Campus-Help-Desk
+python -m http.server 5500 --bind 127.0.0.1
+```
+
+Open **[http://127.0.0.1:5500/app.html](http://127.0.0.1:5500/app.html)**. On Windows, use `py -m http.server 5500 --bind 127.0.0.1` if your Python launcher is `py`.
+
+Serve the folder over HTTP rather than opening the file directly. The local server serves the interface; Supabase provides authentication, stored data, and attachments. The hosted GitHub Pages version requires no local server.
+
+### Backend setup
+
+This frontend is connected to the group's existing Supabase project. **Cloning it does not create a new backend.** To use another project, provision its tables, role policies, private attachment bucket, and account-management functions before updating the connection settings in `app.js`.
+
+Only the frontend publishable key belongs in browser code. Keep service-role keys and other server credentials out of the repository.
+
+Password recovery and email confirmation require matching Supabase Auth URL settings. The hosted application address is:
+
+```text
+https://adrianpasamonte.github.io/Campus-Help-Desk/app.html
+```
+
+Allow its `?recovery=1` redirect and the corresponding local address when testing recovery.
+
+## Project status
+
+The core Student, Staff, and Admin workflows are implemented and remain under classroom testing and refinement. The latest three-file packaging was checked with **290 automated browser assertions** covering role workflows, responsive views, attachments, and submitted ticket details, using synthetic data with external requests blocked. These checks do not replace live backend or email-delivery testing.
+
+Remaining work includes applying the database-side 255-character description constraint (the frontend already enforces its limit), verifying email delivery and recovery in each deployment, and broader pagination, load, and backup/restore checks. This repository contains the frontend; backend migrations and local test utilities are maintained separately.
+
+## Team and feedback
+
+Built by the **BSIT 2-104 Campus Help Desk and Ticketing System group** as a school project.
+
+When reporting an issue, include your role, the steps taken, what you expected, what happened, and a screenshot with personal information removed. Track changes through the group's task board and GitHub workflow.

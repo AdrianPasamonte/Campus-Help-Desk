@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HelpDesk Pro - Ticketing System</title>
 <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -19,25 +20,13 @@
         <div class="logo">HD</div>
         <div>
           <h1>HelpDesk Pro</h1>
-          <p>Support & Ticketing System</p>
+          <p>Campus Support &amp; Ticketing</p>
         </div>
       </div>
 
       <div class="intro-content">
-        <div class="intro-label">Help desk automation</div>
-
-        <h2>
-          Automate your<br>
-          help desk. Elevate<br>
-          support<br>
-          experiences.
-        </h2>
-
-        <p>
-          Put your help desk operations on auto-pilot with
-          HelpDesk Pro. Cut down on manual effort and boost
-          productivity with high-value support.
-        </p>
+        <h2>Need help with<br>campus services?</h2>
+        <p>Find answers to common school concerns, submit a ticket when you need help, and follow your request from the first reply to resolution.</p>
       </div>
     </div>
 
@@ -50,23 +39,23 @@
           <div class="logo">HD</div>
           <div>
             <h1>HelpDesk Pro</h1>
-            <p>Support & Ticketing System</p>
+            <p>Campus Support &amp; Ticketing</p>
           </div>
         </div>
 
         <!-- LOGIN -->
         <div id="loginView">
           <h2>Welcome back</h2>
-          <p class="sub">Sign in to manage your support requests.</p>
+          <p class="sub">Sign in to get help and track your requests.</p>
 
           <form id="loginForm">
             <div class="field">
-              <label>Email</label>
+              <label for="loginEmail">Email</label>
               <input id="loginEmail" type="email" required placeholder="you@school.edu">
             </div>
 
             <div class="field">
-              <label>Password</label>
+              <label for="loginPass">Password</label>
               <div class="password-input"><input id="loginPass" type="password" required placeholder="••••••••"><button id="loginPassToggle" class="password-toggle" type="button" aria-label="Show password" aria-controls="loginPass" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
             </div>
 
@@ -77,7 +66,7 @@
           <button id="showForgotPassword" class="auth-text-button" type="button">Forgot password?</button>
           <p class="toggle-link">
             Don't have an account?
-            <a id="showRegister">Register</a>
+            <button id="showRegister" class="auth-inline-button" type="button">Register</button>
           </p>
         </div>
 
@@ -100,12 +89,12 @@
 
           <form id="registerForm">
             <div class="field">
-              <label>Full Name</label>
+              <label for="regName">Full Name</label>
               <input id="regName" required placeholder="Juan Dela Cruz">
             </div>
 
             <div class="field">
-              <label>Email</label>
+              <label for="regEmail">Email</label>
               <input id="regEmail" type="email" required placeholder="you@school.edu">
             </div>
 
@@ -126,7 +115,7 @@
 
           <p class="toggle-link">
             Already have an account?
-            <a id="showLogin">Log in</a>
+            <button id="showLogin" class="auth-inline-button" type="button">Log in</button>
           </p>
         </div>
 
@@ -140,7 +129,8 @@
 <div id="app" class="app hidden">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <button id="navScrim" class="nav-scrim hidden" type="button" aria-label="Close navigation" tabindex="-1"></button>
+  <aside id="appSidebar" class="sidebar" aria-label="Main navigation">
     <div class="side-brand">
       <div class="logo">HD</div>
       <div>
@@ -149,7 +139,7 @@
       </div>
     </div>
 
-    <nav class="nav">
+    <button id="closeNav" class="close-nav" type="button" aria-label="Close navigation">×</button><nav class="nav" aria-label="HelpDesk navigation">
       <button id="navHome" class="active" data-view="dashboard">▦ Dashboard</button>
 
       <button id="navTickets" data-view="tickets">
@@ -189,31 +179,29 @@
 
 
   <!-- MAIN CONTENT -->
-  <main class="main">
+  <main id="mainContent" class="main" tabindex="-1">
 
     <!-- TOP BAR -->
     <div class="topbar">
+      <button id="menuBtn" class="btn menu-toggle" type="button" aria-label="Open navigation" aria-controls="appSidebar" aria-expanded="false"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
       <div>
         <h2 id="pageTitle">Dashboard</h2>
         <p id="pageSub">Overview of your support requests</p>
       </div>
 
-      <div class="topbar-actions"><button id="notificationBtn" class="btn" type="button" aria-expanded="false" aria-controls="notificationPanel">Notifications <span id="notificationCount" class="notification-count hidden">0</span></button><div class="user-pill">
-        ●
-        <span id="userName">User</span>
-      </div></div>
+      <div class="topbar-actions"><button id="notificationBtn" class="btn" type="button" aria-expanded="false" aria-controls="notificationPanel" aria-label="Notifications" title="Notifications"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="notificationCount" class="notification-count hidden">0</span></button><button id="accountProfileBtn" class="account-profile" type="button" data-go="profile" aria-label="Open your profile" title="View and edit your profile"><span id="accountAvatar" class="account-avatar" aria-hidden="true">HD</span><span class="account-copy"><span id="userName">User</span></span></button></div>
     </div>
 
-    <section id="notificationPanel" class="card hidden" aria-labelledby="notificationTitle"><div class="notification-heading"><h3 id="notificationTitle">Notifications</h3><button id="closeNotifications" class="btn notification-close" type="button" aria-label="Close notifications">×</button></div><button id="markNotificationsRead" class="btn" type="button">Mark all read</button><p id="notificationError" class="error" role="status"></p><div id="notificationList"></div></section>
+    <section id="notificationPanel" class="card hidden" aria-labelledby="notificationTitle"><div class="notification-heading"><span class="notification-heading-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><div class="notification-heading-copy"><h3 id="notificationTitle">Notifications</h3><p id="notificationSummary">You’re all caught up</p></div><button id="closeNotifications" class="btn notification-close" type="button" aria-label="Close notifications"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="notification-toolbar"><span>Recent activity</span><button id="markNotificationsRead" class="btn" type="button"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 4 4L20 4M12 16l3 3 6-7"/></svg><span>Mark all read</span></button></div><p id="notificationError" class="error" role="status"></p><div id="notificationList"></div><p class="notification-footnote">Select an update to open its ticket</p></section>
     <!-- DASHBOARD -->
     <section id="dashboard" class="view active">
 <div id="helpHome" class="hidden">
-<div class="help-intro"><div><span class="eyebrow">CAMPUS SUPPORT</span><h1>How can we help you?</h1><p>Browse answers or ask the support team for help.</p></div><button class="primary" type="button" data-go="create">Create a ticket</button></div>
-<div class="field help-search"><label for="faqSearch">Search the knowledge base</label><input id="faqSearch" type="search" placeholder="Search passwords, eLMS, lab computers, payments..."></div>
+<div class="help-intro"><div class="help-intro-copy"><h3 id="helpSearchTitle">How can we help you?</h3><p>Browse answers or ask the support team for help.</p></div><button class="primary" type="button" data-go="create">Create a ticket</button></div>
+<div class="field help-search"><input id="faqSearch" aria-label="Search help articles" type="search" placeholder="Search passwords, eLMS, lab computers, payments..."></div>
 <div id="faqTopics" class="faq-topics" role="group" aria-label="Filter help articles by topic"></div>
 <div class="faq-results-heading"><h2>Help articles</h2><span id="faqResultCount" role="status" aria-live="polite"></span></div>
 <div id="homeFaqs" class="knowledge"></div>
-<div class="support-callout"><div><h2>Still need a hand?</h2><p>Tell us what happened. We’ll help you find the right support team.</p></div><button class="primary" data-go="create">＋ Create a ticket</button></div>
+<div class="support-callout"><div><h2>Still need a hand?</h2><p>Tell us what happened. We’ll help you find the right support team.</p></div><button class="primary" type="button" data-go="create">Create a ticket</button></div>
 </div>
 <div id="staffDashboard">
 
@@ -295,17 +283,17 @@
         <div class="toolbar">
 
           <input
-            id="search"
+            id="search" aria-label="Search active tickets"
             placeholder="Search tickets...">
 
-          <select id="statusFilter">
+          <select id="statusFilter" aria-label="Filter by ticket status">
             <option value="">All active statuses</option>
             <option>Open</option>
             <option>In Progress</option>
           </select>
 
           <select id="departmentFilter" class="hidden" aria-label="Filter by department"><option value="">All departments</option><option value="it">IT</option><option value="registrar">Registrar</option><option value="finance">Finance / Cashier</option><option value="review">Admin review</option></select>
-          <select id="assignFilter" class="hidden">
+          <select id="assignFilter" aria-label="Filter by assignment" class="hidden">
             <option value="">All tickets</option>
             <option value="unassigned">Unassigned queue</option>
             <option value="mine">Assigned to me</option>
@@ -347,15 +335,15 @@
         <div class="toolbar">
 
           <input
-            id="historySearch"
+            id="historySearch" aria-label="Search ticket history"
             placeholder="Search tickets...">
 
           <!-- STAFF / ADMIN ONLY -->
           <input
-            id="historyNameSearch"
+            id="historyNameSearch" aria-label="Search by requester name"
             placeholder="Search student name...">
 
-          <select id="historyStatusFilter">
+          <select id="historyStatusFilter" aria-label="Filter ticket history status">
             <option value="">All history</option>
             <option>Resolved</option>
             <option>Closed</option>
@@ -398,48 +386,13 @@
       <div class="ticket-detail">
 
         <div class="ticket-info">
-        <div class="card">
+        <div class="card" id="ticketSummaryCard">
 
           <div id="detailContent"></div><details id="screenshotSection" class="request-screenshots hidden"><summary>Screenshots</summary><div id="ticketAttachments"></div></details><p id="attachmentUploadNotice" class="field-hint" role="status"></p><div id="attachmentRetryActions" class="actions hidden"><button id="retryAttachments" class="btn" type="button">Retry screenshots</button><button id="dismissAttachmentRetry" class="btn" type="button">Dismiss</button></div>
-        </div>
-        <!-- STUDENT RESOLUTION -->
-        <div class="card hidden" id="resolveCard">
-
-          <h3>Is your problem solved?</h3>
-
-          <p class="resolution-prompt">
-            Confirm the solution, or ask support to take another look.
-          </p>
-
-          <details id="reopenExplanation" class="reopen-explanation">
-            <summary>Add what still needs fixing (optional)</summary>
-          <div class="field">
-
-            <textarea
-              aria-label="What still needs fixing (optional)" id="reopenReason"
-              placeholder="Not fixed? Tell us what is still wrong (optional)"></textarea>
-
+          <div class="actions hidden" id="deleteCard">
+            <button class="btn" id="deleteTicket" type="button">Submitted by mistake?</button>
           </div>
-          </details>
-
-          <div class="actions">
-
-            <button
-              class="btn blue"
-              id="confirmFixed">
-              Yes, it's fixed
-            </button>
-
-            <button
-              class="btn"
-              id="reopenTicket">
-              Not fixed
-            </button>
-
-          </div>
-
         </div>
-
         <!-- STAFF UPDATE -->
         <div class="card" id="updateCard">
 
@@ -448,7 +401,7 @@
 
           <div class="field">
 
-            <label>Status</label>
+            <label for="detailStatus">Status</label>
 
             <select id="detailStatus">
               <option>Open</option>
@@ -461,7 +414,7 @@
 
           <div class="field">
 
-            <label>Assigned To</label>
+            <label for="detailAssignee">Assigned To</label>
 
             <select id="detailAssignee">
               <option value="">Unassigned</option>
@@ -471,7 +424,7 @@
 
           <div class="field">
 
-            <label>Resolution Note</label>
+            <label for="detailResolution">Resolution Note</label>
 
             <textarea
               id="detailResolution"
@@ -488,23 +441,6 @@
 
         </div>
 
-        <!-- DELETE -->
-        <details class="card hidden" id="deleteCard">
-
-          <summary>Submitted this by mistake?</summary>
-
-          <p
-            style="font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:15px">
-            Submitted this twice by mistake? You can delete a duplicate while it is still Open.
-          </p>
-
-          <button
-            class="primary danger"
-            id="deleteTicket">
-            Delete Ticket
-          </button>
-
-        </details>
         </div>
 
         <div id="conversationCard" class="card conversation-card">
@@ -515,11 +451,27 @@
 
             <div id="commentList" tabindex="0" role="region" aria-label="Conversation messages"></div>
 
+            <div class="card hidden" id="resolveCard">
+              <h3>Is your problem solved?</h3>
+              <p class="resolution-prompt">Confirm the solution, or ask support to take another look.</p>
+              <details id="reopenExplanation" class="reopen-explanation">
+                <summary>Add what still needs fixing (optional)</summary>
+                <div class="field">
+                  <textarea aria-label="What still needs fixing (optional)" id="reopenReason" placeholder="Not fixed? Tell us what is still wrong (optional)"></textarea>
+                </div>
+              </details>
+              <div class="actions">
+                <button class="btn blue" id="confirmFixed" type="button">Yes, it's fixed</button>
+                <button class="btn" id="reopenTicket" type="button">Not fixed</button>
+              </div>
+            </div>
+
             <form id="commentForm">
               <p id="replyError" class="error" role="alert"></p>
 
               <div class="field">
 
+                <label for="commentText">Reply</label>
                 <textarea
                   aria-label="Your reply" id="commentText"
                   required
@@ -527,7 +479,7 @@
                   style="min-height:80px"></textarea>
 
               </div>
-<details class="reply-attachments"><summary>Attach screenshots (optional)</summary><div class="field"><label for="replyFiles">Screenshots (optional)</label><input id="replyFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="replyFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP.</p></div></details>
+<div class="attachment-picker"><div class="attachment-picker-bar"><button id="replyFilesButton" type="button" class="btn attachment-pick-button" aria-label="Attach images" aria-describedby="replyFilesInfo" title="Attach images"><img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiB2aWV3Qm94PSIwIDAgMTQgMTQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJJY29uICYjMjI2OyYjMTI4OyYjMTYyOyBjbGlwIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTcuNTgzMzMgMS4xNjY2N0wxLjc1IDdDMS4zMjg3NSA3LjU2MTY3IDEuMTI0MjMgOC4yNTY0NCAxLjE3NCA4Ljk1Njc2QzEuMjIzNzcgOS42NTcwOCAxLjUyNDQ5IDEwLjMxNTkgMi4wMjA5NCAxMC44MTI0QzIuNTE3MzkgMTEuMzA4OCAzLjE3NjI1IDExLjYwOTYgMy44NzY1NyAxMS42NTkzQzQuNTc2ODkgMTEuNzA5MSA1LjI3MTY2IDExLjUwNDYgNS44MzMzMyAxMS4wODMzTDExLjA4MzMgNS44MzMzM0MxMS4yMzkzIDUuNTA2NzggMTEuMjkwMiA1LjEzOTkgMTEuMjI5IDQuNzgzMjJDMTEuMTY3OCA0LjQyNjU0IDEwLjk5NzUgNC4wOTc2IDEwLjc0MTYgMy44NDE3MUMxMC40ODU3IDMuNTg1ODEgMTAuMTU2OCAzLjQxNTU0IDkuODAwMTIgMy4zNTQzNUM5LjQ0MzQ0IDMuMjkzMTUgOS4wNzY1NiAzLjM0NDA0IDguNzUgMy41TDQuNjY2NjcgNy41ODMzM0wzLjUgOC43NSIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSIjMjU2M0VCIi8+CjwvZz4KPC9zdmc+Cg==" width="14" height="14" alt="" aria-hidden="true"><span>Attach</span></button><span class="attachment-limit">Up to 3 images · 5 MB each</span></div><input id="replyFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden aria-label="Choose images"><p id="replyFilesInfo" class="attachment-selection-status" role="status" aria-live="polite"></p><div id="replyFilesPreviews" class="attachment-previews"></div></div>
 
 
               <button
@@ -564,7 +516,7 @@
           <div class="form-grid">
 
             <div class="field">
-              <label>Full Name</label>
+              <label for="staffName">Full Name</label>
               <input
                 id="staffName"
                 required
@@ -573,7 +525,7 @@
 
             <div class="field">
 
-              <label>Email</label>
+              <label for="staffEmail">Email</label>
 
               <input
                 id="staffEmail"
@@ -585,7 +537,7 @@
 
             <div class="field">
 
-              <label>Password</label>
+              <label for="staffPass">Password</label>
 
               <input
                 id="staffPass"
@@ -598,7 +550,7 @@
 
             <div class="field">
 
-              <label>Role</label>
+              <label for="staffRole">Role</label>
 
               <select id="staffRole">
                 <option value="staff">Staff</option>
@@ -629,7 +581,7 @@
 
         <h3>Users</h3>
         <div class="toolbar"><input id="userSearch" type="search" aria-label="Search users" placeholder="Search name or email..."><select id="userRoleFilter" aria-label="Filter users by role"><option value="">All roles</option><option value="student">Students</option><option value="staff">Staff</option><option value="admin">Admins</option></select></div>
-        <p id="userResultCount" class="field-hint" role="status" aria-live="polite"></p>
+        <p id="adminCoverage" class="field-hint"></p><p id="userResultCount" class="field-hint" role="status" aria-live="polite"></p>
 
         <div class="table-wrap">
 
@@ -681,7 +633,7 @@
 
         <div class="field">
 
-          <label>Full Name</label>
+          <label for="profileName">Full Name</label>
 
           <input
             maxlength="150" required id="profileName"
@@ -691,7 +643,7 @@
 
         <div class="field">
 
-          <label>Email</label>
+          <label for="profileEmail">Email</label>
 
           <input
             required id="profileEmail"
@@ -718,20 +670,20 @@
   <header class="ticket-dialog-header"><div><span class="eyebrow">CAMPUS SUPPORT</span><h2 id="ticketDialogTitle">Create a ticket</h2><p>Tell us what you need help with. We’ll ask for the details that matter.</p></div><button id="closeTicketDialog" class="dialog-close" type="button" aria-label="Close ticket form">×</button></header>
   <form id="ticketForm">
     <div class="ticket-selector-panel">
-      <div class="field"><label for="supportArea">What do you need help with? <span aria-hidden="true">*</span></label><select id="supportArea" required><option value="" disabled selected hidden>Select a topic</option><option value="account">Account access</option><option value="portals">eLMS &amp; SIMS</option><option value="lab">Computer lab</option><option value="records">Student records &amp; enrollment</option><option value="fees">Fees &amp; payments</option><option value="other">Something else / Not sure</option></select></div>
+      <div class="field"><label for="supportArea">What do you need help with? <span aria-hidden="true">*</span></label><select id="supportArea" required><option value="" disabled selected hidden>Select a topic</option><option value="account">Account access</option><option value="portals">eLMS &amp; SIMS</option><option value="lab">Computer lab</option><option value="records">Student records &amp; enrollment</option><option value="fees">Fees &amp; payments</option><option value="other">Others</option></select></div>
       <div id="issueStep" class="field hidden"><label for="issueType">What do you need help with specifically? <span aria-hidden="true">*</span></label><select id="issueType" required disabled><option value="" disabled selected hidden>Select a concern</option></select></div><input id="category" type="hidden">
     </div>
     <fieldset id="ticketDetailsStep" class="ticket-details-panel hidden" disabled>
       <legend id="selectedConcernTitle">Tell us more</legend>
       <div id="requestFields" class="form-grid"></div>
-      <div class="ticket-description-fields"><div class="field"><label for="ticketFiles">Screenshots (optional)</label><input id="ticketFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><p id="ticketFilesInfo" class="field-hint">Up to 3 screenshots, 5 MB each. PNG, JPG, or WebP. Hide personal information, passwords, and verification codes.</p></div>
-        <div class="field"><label for="subject">Subject <span aria-hidden="true">*</span></label><input id="subject" required maxlength="150" placeholder="A short summary of your concern"></div>
-        <div class="field"><label for="description">Description <span aria-hidden="true">*</span></label><textarea id="description" required placeholder="Describe your concern and include any details that will help us understand it."></textarea></div>
-        <p class="field-hint">Do not include passwords or verification codes.</p>
+      <div class="ticket-description-fields">
+        <div class="field"><label for="subject">Subject <span aria-hidden="true">*</span></label><input id="subject" maxlength="150" placeholder="A short summary of your concern"></div>
+        <div class="field"><label for="description">Description <span aria-hidden="true">*</span></label><textarea id="description" required maxlength="255" aria-describedby="descriptionCount" placeholder="Describe your concern and include any details that will help us understand it."></textarea></div>
+        <p id="descriptionCount" class="field-hint" role="status" aria-live="polite">0/255 characters, including guided answers</p><p class="field-hint">Do not include passwords or verification codes.</p><div class="attachment-picker"><div class="attachment-picker-bar"><button id="ticketFilesButton" type="button" class="btn attachment-pick-button" aria-label="Attach images" aria-describedby="ticketFilesInfo" title="Attach images"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 11-9 9a6 6 0 0 1-8.5-8.5L13 2a4 4 0 0 1 5.7 5.7L9.2 17.2a2 2 0 0 1-2.8-2.8L15 6"/></svg><span>Attach</span></button><span class="attachment-limit">Up to 3 images · 5 MB each</span></div><input id="ticketFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden aria-label="Choose images"><p id="ticketFilesInfo" class="attachment-selection-status" role="status" aria-live="polite"></p><div id="ticketFilesPreviews" class="attachment-previews"></div></div>
       </div>
     </fieldset>
     <div id="ticketSubmitError" class="error" role="alert"></div>
-    <footer class="ticket-dialog-footer"><button id="cancelTicketDialog" class="btn" type="button">Cancel</button><button id="submitTicketBtn" class="primary" type="submit" disabled>Submit ticket</button></footer>
+    <footer class="ticket-dialog-footer"><button id="cancelTicketDialog" class="btn hidden" type="button">Cancel</button><button id="submitTicketBtn" class="primary" type="submit" disabled>Submit ticket</button></footer>
   </form>
 </dialog>
 
@@ -752,10 +704,11 @@
   </form>
 </dialog>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- JAVASCRIPT -->
+<dialog id="actionDialog" class="action-dialog" aria-labelledby="actionDialogTitle" aria-describedby="actionDialogMessage">
+  <h2 id="actionDialogTitle">HelpDesk Pro</h2>
+  <p id="actionDialogMessage"></p>
+  <div class="actions"><button id="actionDialogCancel" class="btn" type="button">Cancel</button><button id="actionDialogAccept" class="btn blue" type="button">OK</button></div>
+</dialog>
 <script src="app.js"></script>
 
 </body>
