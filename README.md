@@ -47,13 +47,11 @@ Request information and the conversation sit side by side on wider screens. Subm
 ![Student ticket details beside the support conversation and reply composer](docs/screenshots/ticket-conversation.png)
 
 <details>
-<summary><strong>Staff department tickets and notifications</strong></summary>
+<summary><strong>Staff department tickets</strong></summary>
 
-Staff review tickets routed to their department, while the notification panel links directly to updated requests.
+Staff review tickets routed to their department and filter requests by status.
 
 ![Staff Department Tickets with search, status filters, and ticket actions](docs/screenshots/staff-department-tickets.png)
-
-![Bell notification panel with subject-first activity and unread controls](docs/screenshots/notifications.png)
 
 </details>
 
@@ -63,15 +61,6 @@ Staff review tickets routed to their department, while the notification panel li
 Admins can review request volume, department workload, and commonly reported concerns.
 
 ![Admin reports with request volume and department charts](docs/screenshots/admin-reports.png)
-
-</details>
-
-<details>
-<summary><strong>Sign-in and mobile layout</strong></summary>
-
-![HelpDesk Pro sign-in page](docs/screenshots/sign-in.png)
-
-<p align="center"><img src="docs/screenshots/mobile-ticket.png" width="300" alt="Student ticket details and conversation stacked on a phone"></p>
 
 </details>
 
