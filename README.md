@@ -149,15 +149,3 @@ https://adrianpasamonte.github.io/Campus-Help-Desk/app.html
 ```
 
 Allow its `?recovery=1` redirect and the corresponding local address when testing recovery.
-
-## Project status
-
-The core Student, Staff, and Admin workflows are implemented and remain under classroom testing and refinement. The latest three-file packaging was checked with **290 automated browser assertions** covering role workflows, responsive views, attachments, and submitted ticket details, using synthetic data with external requests blocked. These checks do not replace live backend or email-delivery testing.
-
-Remaining work includes applying the database-side 255-character description constraint (the frontend already enforces its limit), verifying email delivery and recovery in each deployment, and broader pagination, load, and backup/restore checks. This repository contains the frontend; backend migrations and local test utilities are maintained separately.
-
-## Team and feedback
-
-Built by the **BSIT 2-104 Campus Help Desk and Ticketing System group** as a school project.
-
-When reporting an issue, include your role, the steps taken, what you expected, what happened, and a screenshot with personal information removed. Track changes through the group's task board and GitHub workflow.
