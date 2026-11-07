@@ -99,13 +99,14 @@ Public registration creates Student accounts. Staff/Admin accounts are created t
 | Attachments | Private Supabase Storage |
 | Frontend hosting | GitHub Pages |
 
-The frontend has **three application source files** and no build step. The pinned Supabase JavaScript client **2.119.0** is bundled inside `app.js`, with its MIT notice retained.
+The frontend has **three application source files** and no build step. The pinned Supabase JavaScript client **2.119.0** is kept in `vendor/supabase.min.js`, with its MIT notice retained.
 
 ```text
 Campus-Help-Desk/
 ├── app.html              # Screens, forms, and dialogs
 ├── app.js                # Application behavior and Supabase integration
 ├── style.css             # Styling and responsive layouts
+├── vendor/supabase.min.js # Official Supabase library and license
 ├── docs/screenshots/     # Images used in this README
 ├── README.md
 └── .gitignore
