@@ -1,7 +1,3 @@
-// HelpDesk Pro application logic. Supabase is loaded first from vendor/supabase.min.js.
-
-
-;
 // Shared, accessible confirmations and notices for the prototype's dialog states.
 (() => {
   const dialog = document.getElementById("actionDialog");
